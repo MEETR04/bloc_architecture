@@ -18,6 +18,7 @@ jobs:
         with:
           flutter-version: '3.38.9'
           channel: stable
+          cache: true
 
       - name: Verify Flutter Installation
         run: flutter --version

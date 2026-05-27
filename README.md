@@ -208,9 +208,34 @@ dart run flutter_launcher_icons -f flutter_launcher_icons.yaml
 dart run flutter_native_splash:create --path=flutter_native_splash.yaml
 ```
 
-### 5. Static Code Analysis
-To run code formatting checks and verify clean compilation:
+### 5. Static Code Analysis & Tests
+To verify formatting, run static analysis checks, and run the test suite:
 ```bash
+# Format code
 dart format .
-dart analyze
+
+# Run static analysis
+flutter analyze
+
+# Run unit and widget tests
+flutter test
 ```
+
+### 6. Rename Application Package Name
+To rename the Android package name and iOS bundle identifier across all platforms:
+```bash
+dart run change_app_package_name:main <new_package_name>
+```
+*Example:*
+```bash
+dart run change_app_package_name:main com.example.newappname
+```
+
+---
+
+## 🚀 CI/CD Pipeline
+The project includes a pre-configured GitHub Actions workflow located at [.github/workflows/dart.yml](file:///Users/hyperlink/StudioProjects/bloc_architecture/.github/workflows/dart.yml) that:
+1. Installs the exact Flutter version (`3.38.9`).
+2. Leverages caching for the SDK and pub dependencies (`cache: true`) to optimize execution times.
+3. Automatically runs lint checks (`flutter analyze`) and execution tests (`flutter test`) on pushes and pull requests to the `main` branch.
+
