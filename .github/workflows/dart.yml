@@ -23,6 +23,9 @@ jobs:
       - name: Verify Flutter Installation
         run: flutter --version
 
+      - name: Create dummy .env file
+        run: echo "BACKEND_AES_KEY=GOkuTthyu094jgh56YHVhf767llJYLKF" > .env
+
       - name: Install dependencies
         run: flutter pub get
 
