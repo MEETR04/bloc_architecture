@@ -1,29 +1,48 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// This is a basic Flutter widget test for the custom AppButton widget.
 
-import 'package:bloc_architecture/main.dart';
+import 'package:bloc_architecture/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('AppButton renders text and triggers onPressed on tap',
+      (WidgetTester tester) async {
+    bool isPressed = false;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Build our widget tree with ScreenUtilInit.
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: AppButton(
+                text: 'Test Button',
+                onPressed: () {
+                  isPressed = true;
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify that the button is rendered with the correct label.
+    expect(find.text('Test Button'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Tap the button and trigger a frame.
+    await tester.tap(find.text('Test Button'));
+    await tester.pumpAndSettle();
+
+    // Verify that the tap callback was executed.
+    expect(isPressed, true);
+
+    // Pump to clear the 1-second debounce timer started by the button.
+    await tester.pump(const Duration(seconds: 2));
   });
 }
+
