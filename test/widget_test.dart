@@ -6,8 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('AppButton renders text and triggers onPressed on tap',
-      (WidgetTester tester) async {
+  testWidgets('AppButton renders text and triggers onPressed on tap', (
+    WidgetTester tester,
+  ) async {
     bool isPressed = false;
 
     // Build our widget tree with ScreenUtilInit.
@@ -45,4 +46,3 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
   });
 }
-

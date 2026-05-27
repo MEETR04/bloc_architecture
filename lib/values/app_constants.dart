@@ -1,6 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 abstract final class AppConstants {
   // Encryption
-  static const String aesKey = 'GOkuTthyu094jgh56YHVhf767llJYLKF';
+  static final String aesKey = dotenv.env['BACKEND_AES_KEY'] ?? '';
 
   // Sign-up defaults
   static const String defaultBusinessName = 'AGRO';

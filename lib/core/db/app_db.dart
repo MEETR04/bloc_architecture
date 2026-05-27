@@ -1,5 +1,6 @@
 import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:bloc_architecture/features/auth/models/response/sign_up_response_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 
 class AppDB {
@@ -41,11 +42,8 @@ class AppDB {
 
   set isGuestUser(bool update) => setValue('isGuestUser', update);
 
-  String get apiKey => getValue(
-    'apiKey',
-    defaultValue:
-        'YKoGcMbFZwUFJf0LF7UUXEG91LDuEmNFLRn14vKNupVdciQXs2XthzSyF77TQPbz',
-  );
+  String get apiKey =>
+      getValue('apiKey', defaultValue: dotenv.env['BACKEND_AES_KEY'] ?? '');
 
   set apiKey(String update) => setValue('apiKey', update);
 
