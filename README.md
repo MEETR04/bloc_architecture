@@ -173,12 +173,20 @@ The project includes custom-built, highly-optimized components that implement de
 
 ## ⚡ Getting Started & Development Commands
 
-### 1. Install Dependencies
+### 1. Configure Environment Variables
+Create a `.env` file in the root directory of the project. This file is required to store application configurations and secret keys (such as the AES encryption key) and is loaded at runtime:
+```env
+BACKEND_AES_KEY=GOkuTthyu094jgh56YHVhf767llJYLKF
+```
+> [!IMPORTANT]
+> The `.env` file is registered under the `assets:` section of `pubspec.yaml` to be compiled into the application bundle. Avoid pushing production credentials to public source repositories.
+
+### 2. Install Dependencies
 ```bash
 flutter pub get
 ```
 
-### 2. Generate Code (Retrofit & AutoRoute)
+### 3. Generate Code (Retrofit & AutoRoute)
 Ensure the code generation watcher is running to compile serialization, network clients, and routes:
 ```bash
 # Run one-off generation
@@ -188,7 +196,7 @@ dart run build_runner build --delete-conflicting-outputs
 dart run build_runner watch --delete-conflicting-outputs
 ```
 
-### 3. Generate Localizations (Internationalization)
+### 4. Generate Localizations (Internationalization)
 Generate localizations delegate classes and translation support mappings:
 ```bash
 # Using Flutter Intl (Localizely utility)
@@ -198,7 +206,7 @@ flutter pub run intl_utils:generate
 flutter gen-l10n
 ```
 
-### 4. Generate Launcher Icons & Splash Screens
+### 5. Generate Launcher Icons & Splash Screens
 To generate/update application launcher icons and native splash screens using their respective configuration files:
 ```bash
 # Generate launcher icons
@@ -208,7 +216,7 @@ dart run flutter_launcher_icons -f flutter_launcher_icons.yaml
 dart run flutter_native_splash:create --path=flutter_native_splash.yaml
 ```
 
-### 5. Static Code Analysis & Tests
+### 6. Static Code Analysis & Tests
 To verify formatting, run static analysis checks, and run the test suite:
 ```bash
 # Format code
@@ -221,7 +229,7 @@ flutter analyze
 flutter test
 ```
 
-### 6. Rename Application Package Name
+### 7. Rename Application Package Name
 To rename the Android package name and iOS bundle identifier across all platforms:
 ```bash
 dart run change_app_package_name:main <new_package_name>
