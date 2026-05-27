@@ -49,7 +49,7 @@ linter:
     # ----------------------------
     # CODE QUALITY
     # ----------------------------
-    avoid_print: false
+    avoid_print: true
     avoid_empty_else: true
     avoid_unnecessary_containers: true
     avoid_web_libraries_in_flutter: true
