@@ -1,0 +1,124 @@
+# -----------------------------
+# Flutter & Dart
+# -----------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.metadata
+devtools_options.yaml
+
+# Symbolication & Obfuscation
+app.*.symbols
+app.*.map.json
+
+# -----------------------------
+# IntelliJ / Android Studio
+# -----------------------------
+*.iml
+*.ipr
+*.iws
+.idea/
+android/.gradle/
+android/local.properties
+android/.idea/
+android/captures/
+
+# Gradle
+.gradle/
+**/build/
+
+# -----------------------------
+# VS Code
+# -----------------------------
+.vscode/
+
+# -----------------------------
+# macOS
+# -----------------------------
+.DS_Store
+
+# -----------------------------
+# Xcode / iOS
+# -----------------------------
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+*.xcworkspace
+*.xcuserstate
+*.xcuserdatad
+*.xcsettings
+DerivedData/
+Runner.xcworkspace/
+
+# -----------------------------
+# Android
+# -----------------------------
+*.jks
+*.keystore
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# -----------------------------
+# Linux
+# -----------------------------
+linux/flutter/ephemeral/
+
+# -----------------------------
+# Windows
+# -----------------------------
+windows/flutter/ephemeral/
+
+# -----------------------------
+# Misc
+# -----------------------------
+*.class
+*.log
+*.pyc
+*.swp
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# -----------------------------
+# Environment & Secret Configurations
+# -----------------------------
+.env
+.env.*
+*.env
+local.properties
+
+# -----------------------------
+# Local Storage / Database caches (Hive & SQLite)
+# -----------------------------
+*.hive
+*.lock
+*.box
+*.lck
+*.db
+*.sqlite
+
+# -----------------------------
+# OS & Editor Overrides
+# -----------------------------
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries/
+.idea/libraries/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
