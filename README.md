@@ -128,6 +128,23 @@ The project includes custom-built, highly-optimized components that implement de
 * **Stacking Prevention**: Integrated globally via `ToastificationWrapper` with `maxToastLimit: 1` in `main.dart`. This ensures that only one toast is visible at any given time, preventing user interface clutter.
 * **Direct Triggering**: Exposes static helpers (`showSuccess`, `showError`, `showInfo`, and `showWarning`) that immediately display overlay notifications styled with the app's predefined text styles and theme-specific colors.
 
+### 3. `AppListView` (Edge-to-Edge Scrollable Wrapper)
+* **Constructor Overloads**: Provides drop-in replacements for standard list views via `AppListView()`, `AppListView.builder()`, and `AppListView.separated()`.
+* **Platform-Specific Padding**: Automatically resolves and integrates the system navigation bar space (`MediaQuery.paddingOf(context).bottom` / `systemBottomNavigationBarSpace`) into the list's interior `padding` property **only on Android**. This preserves the edge-to-edge scrolling effect while preventing the last item from getting stuck under the navigation bar.
+
+### 4. `AutoRefreshBuilder` (Connectivity State recovery)
+* **Connection Observer**: Listens to the `onInternetRestored` broadcast stream from the global `NetworkService`.
+* **Automatic Reloading**: Once connection recovery is detected, it automatically fires the `onRetry` callback (e.g. to request/re-fetch lists or reload views on network state transition from offline to online).
+
+---
+
+## 📱 Edge-to-Edge Design Compatibility
+
+The architecture is fully compatible with Android 15's forced edge-to-edge layout constraints, and ensures identical behavior on Android 10+ (API 29+):
+* **Adaptable Scrollables (`AppListView`)**: Fits the window natively under transparent system bars while protecting content using resolved system bottom navigation bar insets (`systemBottomNavigationBarSpace`) in list views.
+* **Native Backwards Compatibility**: Programmatically forces the decor layout under system bars and sets status and navigation colors to transparent inside [MainActivity.kt](file:///Users/hyperlink/StudioProjects/bloc_architecture/android/app/src/main/kotlin/com/example/bloc_architecture/MainActivity.kt) on older Android versions.
+* **Fully Transparent Bars**: Disables the system's default translucent contrast scrims in both light and dark mode (`systemNavigationBarContrastEnforced: false`), ensuring navigation bars remain fully transparent.
+
 ---
 
 ## 🏛 Layer & Component Responsibilities

@@ -3,6 +3,7 @@ import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:bloc_architecture/features/home/bloc/home_bloc.dart';
 import 'package:bloc_architecture/values/app_spacing.dart';
 import 'package:bloc_architecture/values/app_text_style.dart';
+import 'package:bloc_architecture/widgets/app_list_view.dart';
 import 'package:bloc_architecture/widgets/auto_refresh_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +27,7 @@ class HomePage extends StatelessWidget {
               if (state is UserListLoadingState) {
                 return Skeletonizer(
                   enabled: true,
-                  child: ListView.builder(
+                  child: AppListView.builder(
                     padding: AppSpacing.symmetricHS16,
                     itemCount: 6,
                     itemBuilder: (context, index) => Card(
@@ -52,7 +53,7 @@ class HomePage extends StatelessWidget {
                   onRefresh: () async {
                     context.read<HomeBloc>().add(FetchUsersEvent());
                   },
-                  child: ListView.builder(
+                  child: AppListView.builder(
                     padding: AppSpacing.symmetricHS16,
                     itemCount: state.users.length,
                     itemBuilder: (context, index) {
@@ -60,16 +61,30 @@ class HomePage extends StatelessWidget {
                       return Card(
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: user.avatar != null
+                            backgroundColor: Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: 0.1),
+                            backgroundImage:
+                                user.avatar != null && user.avatar!.isNotEmpty
                                 ? NetworkImage(user.avatar!)
                                 : null,
-                            child: user.avatar == null
-                                ? Text(user.firstName?[0] ?? '?')
+                            child: user.avatar == null || user.avatar!.isEmpty
+                                ? Text(
+                                    user.firstName?.isNotEmpty == true
+                                        ? user.firstName![0].toUpperCase()
+                                        : '?',
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
                                 : null,
                           ),
                           title: Text(
                             user.fullName,
-                            style: AppTextStyle.headingSmall,
+                            style: AppTextStyle.headingSmall.copyWith(
+                              fontSize: 15.r,
+                            ),
                           ),
                           subtitle: Text(
                             user.email ?? '',

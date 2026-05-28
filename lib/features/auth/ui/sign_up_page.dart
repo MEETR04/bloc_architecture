@@ -50,9 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
             }
           },
           builder: (context, state) {
-            if (state is AuthLoadingState) {
-              return const CircularProgressIndicator();
-            }
+            final bool isLoading = state is AuthLoadingState;
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
@@ -62,16 +60,19 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _emailController,
                     hintText: 'Enter Email',
                     isEmail: true,
+                    enabled: !isLoading,
                   ),
                   10.verticalSpace,
                   AppTextField(
                     controller: _passwordController,
                     hintText: 'Enter Password',
                     isPassword: true,
+                    enabled: !isLoading,
                   ),
                   20.verticalSpace,
                   AppButton(
                     text: 'Sign Up',
+                    isLoading: isLoading,
                     onPressed: () {
                       context.read<AuthBloc>().add(
                         SignUpButtonPressedEvent(
@@ -83,11 +84,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   20.verticalSpace,
                   InkWell(
-                    onTap: () => appRouter.replaceAll([const LoginRoute()]),
+                    onTap: isLoading ? null : () => appRouter.replaceAll([const LoginRoute()]),
                     child: Text(
                       'Already have an account? Sign In',
                       style: AppTextStyle.bodyMedium.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: isLoading
+                            ? Theme.of(context).disabledColor
+                            : Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

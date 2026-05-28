@@ -35,6 +35,9 @@ class AppTheme {
         statusBarColor: AppColors.transparent,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: AppColors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarContrastEnforced: false,
       ),
     ),
     textTheme: TextTheme(
@@ -150,6 +153,9 @@ class AppTheme {
         statusBarColor: AppColors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: AppColors.transparent,
+        systemNavigationBarIconBrightness: Brightness.light,
+        systemNavigationBarContrastEnforced: false,
       ),
     ),
     textTheme: TextTheme(

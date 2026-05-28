@@ -9,7 +9,7 @@ extension ContextX on BuildContext {
       MediaQuery.of(this).orientation == Orientation.portrait;
   bool get isLandscape =>
       MediaQuery.of(this).orientation == Orientation.landscape;
-  double get systemTopStatusBarSpace => MediaQuery.of(this).padding.top;
+  double get systemTopStatusBarSpace => MediaQuery.paddingOf(this).top;
   double get systemBottomNavigationBarSpace =>
-      MediaQuery.of(this).padding.bottom;
+      MediaQuery.paddingOf(this).bottom;
 }

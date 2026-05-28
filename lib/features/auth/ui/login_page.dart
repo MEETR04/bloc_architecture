@@ -52,9 +52,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           },
           builder: (context, state) {
-            if (state is AuthLoadingState) {
-              return const Center(child: CircularProgressIndicator());
-            }
+            final bool isLoading = state is AuthLoadingState;
             return Center(
               child: Padding(
                 padding: AppSpacing.symmetricHS16,
@@ -65,16 +63,19 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _emailController,
                       hintText: 'Enter Email',
                       isEmail: true,
+                      enabled: !isLoading,
                     ),
                     AppSpacing.vs20,
                     AppTextField(
                       controller: _passwordController,
                       hintText: 'Enter Password',
                       isPassword: true,
+                      enabled: !isLoading,
                     ),
                     AppSpacing.vs20,
                     AppButton(
                       text: 'Sign In',
+                      isLoading: isLoading,
                       onPressed: () {
                         context.read<AuthBloc>().add(
                           LoginButtonPressedEvent(
@@ -86,11 +87,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     AppSpacing.vs20,
                     InkWell(
-                      onTap: () => appRouter.push(const SignUpRoute()),
+                      onTap: isLoading ? null : () => appRouter.push(const SignUpRoute()),
                       child: Text(
                         "Don't have an account? Sign Up",
                         style: AppTextStyle.bodyMedium.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: isLoading
+                              ? Theme.of(context).disabledColor
+                              : Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ),

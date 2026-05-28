@@ -11,6 +11,7 @@ class AppButton extends StatefulWidget {
     required this.text,
     this.child,
     required this.onPressed,
+    this.isLoading = false,
     this.buttonBgColor,
     this.textColor,
     this.padding,
@@ -28,6 +29,7 @@ class AppButton extends StatefulWidget {
   final String text;
   final Widget? child;
   final VoidCallback onPressed;
+  final bool isLoading;
   final Color? buttonBgColor;
   final Color? textColor;
   final EdgeInsetsGeometry? padding;
@@ -69,6 +71,7 @@ class _AppButtonState extends State<AppButton>
   }
 
   void _handleTap() async {
+    if (widget.isLoading) return;
     DebouncedButton.run(() async {
       HapticFeedback.mediumImpact();
 
@@ -96,13 +99,14 @@ class _AppButtonState extends State<AppButton>
       child: ScaleTransition(
         scale: _animationController,
         child: MaterialButton(
-          onPressed: _handleTap,
+          onPressed: widget.isLoading ? null : _handleTap,
           color: baseColor,
+          disabledColor: baseColor.withValues(alpha: 0.6),
           textColor: widget.textColor ?? Colors.white,
           elevation: 0,
           highlightElevation: 0,
-          splashColor: widget.enableSplash ? splash : Colors.transparent,
-          highlightColor: widget.enableSplash ? null : Colors.transparent,
+          splashColor: widget.enableSplash && !widget.isLoading ? splash : Colors.transparent,
+          highlightColor: widget.enableSplash && !widget.isLoading ? null : Colors.transparent,
           padding:
               widget.padding ??
               EdgeInsets.symmetric(
@@ -118,15 +122,25 @@ class _AppButtonState extends State<AppButton>
           ),
           minWidth: widget.minWidth,
           height: widget.height,
-          child:
-              widget.child ??
-              Text(
-                widget.text,
-                style: AppTextStyle.labelLarge.copyWith(
-                  fontSize: widget.textSize ?? 16.r,
-                  color: widget.textColor ?? Colors.white,
-                ),
-              ),
+          child: widget.isLoading
+              ? SizedBox(
+                  width: 20.r,
+                  height: 20.r,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      widget.textColor ?? Colors.white,
+                    ),
+                  ),
+                )
+              : (widget.child ??
+                  Text(
+                    widget.text,
+                    style: AppTextStyle.labelLarge.copyWith(
+                      fontSize: widget.textSize ?? 16.r,
+                      color: widget.textColor ?? Colors.white,
+                    ),
+                  )),
         ),
       ),
     );
