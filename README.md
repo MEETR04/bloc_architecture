@@ -256,6 +256,16 @@ dart run change_app_package_name:main <new_package_name>
 dart run change_app_package_name:main com.example.newappname
 ```
 
+### 8. Changing the Application Name
+To fully rename the application, update the name parameter in the following locations:
+1. **Platform Manifests (App Display Name)**:
+   - **Android**: Update `android:label` under the `<application>` node in `android/app/src/main/AndroidManifest.xml`.
+   - **iOS**: Update `CFBundleDisplayName` and `CFBundleName` in `ios/Runner/Info.plist`.
+2. **MaterialApp Title**:
+   - Update the `title` or `onGenerateTitle` callback parameter of the `MaterialApp` widget inside [main.dart](file:///Users/hyperlink/StudioProjects/bloc_architecture/lib/main.dart).
+3. **Project Name**:
+   - Update the `name:` field at the very top of [pubspec.yaml](file:///Users/hyperlink/StudioProjects/bloc_architecture/pubspec.yaml). Run `flutter pub get` and regenerate files using `build_runner`.
+
 ---
 
 ## 🚀 CI/CD Pipeline
