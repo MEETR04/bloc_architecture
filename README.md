@@ -74,13 +74,26 @@ lib/
 │   │   └── ui/                          # Presentation screens
 │   │       ├── login_page.dart
 │   │       └── sign_up_page.dart
-│   └── home/                            # Home / Categories Dashboard module
-│       ├── bloc/                        # Home BLoC
-│       ├── data/                        # Home Datasource
-│       ├── domain/                      # Use Cases & Interfaces
-│       ├── models/                      # Category & User list models
-│       ├── repository/                  # Home Repository Implementation
-│       └── ui/                          # Category and Dashboard Pages
+│   └── home/                            # Home / Users Dashboard module
+│       ├── bloc/                        # Home BLoC (Events, States, and Business logic)
+│       │   ├── home_bloc.dart
+│       │   ├── home_event.dart
+│       │   └── home_state.dart
+│       ├── data/                        # Network APIs and Repository implementations
+│       │   ├── datasource/
+│       │   │   └── home_api.dart
+│       │   └── repository/
+│       │       └── home_repository.dart
+│       ├── domain/                      # Pure business logic layer
+│       │   ├── repository/
+│       │   │   └── i_home_repository.dart
+│       │   └── usecases/
+│       │       └── get_users_use_case.dart
+│       ├── models/                      # Serialization structures
+│       │   └── response/
+│       │       └── reqres_user_model.dart
+│       └── ui/                          # Presentation views
+│           └── home_page.dart
 │
 ├── routes/                              # Navigation and routing module
 │   ├── app_navigator.dart               # Navigation stack operations utility
@@ -106,9 +119,11 @@ lib/
 │
 └── widgets/                             # Shared/Reusable UI components
     ├── app_button.dart
+    ├── app_list_view.dart
     ├── app_snackbar.dart
     ├── app_textfield.dart
     ├── auto_refresh_builder.dart
+    ├── glass_container.dart
     └── glass_dialog.dart
 ```
 
