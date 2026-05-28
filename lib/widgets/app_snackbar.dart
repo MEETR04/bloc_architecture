@@ -10,7 +10,7 @@ class AppSnackbar {
     BuildContext context, {
     required String message,
     String? title,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = const Duration(milliseconds: 1500),
   }) {
     toastification.show(
       context: context,
@@ -26,7 +26,6 @@ class AppSnackbar {
       ),
       autoCloseDuration: duration,
       alignment: Alignment.topCenter,
-      showProgressBar: true,
     );
   }
 
@@ -34,7 +33,7 @@ class AppSnackbar {
     BuildContext context, {
     required String message,
     String? title,
-    Duration duration = const Duration(seconds: 4),
+    Duration duration = const Duration(milliseconds: 1500),
   }) {
     toastification.show(
       context: context,
@@ -50,7 +49,6 @@ class AppSnackbar {
       ),
       autoCloseDuration: duration,
       alignment: Alignment.topCenter,
-      showProgressBar: true,
     );
   }
 
@@ -58,7 +56,7 @@ class AppSnackbar {
     BuildContext context, {
     required String message,
     String? title,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = const Duration(milliseconds: 1500),
   }) {
     toastification.show(
       context: context,
@@ -74,7 +72,6 @@ class AppSnackbar {
       ),
       autoCloseDuration: duration,
       alignment: Alignment.topCenter,
-      showProgressBar: true,
     );
   }
 
@@ -82,7 +79,7 @@ class AppSnackbar {
     BuildContext context, {
     required String message,
     String? title,
-    Duration duration = const Duration(seconds: 3),
+    Duration duration = const Duration(milliseconds: 1500),
   }) {
     toastification.show(
       context: context,
@@ -98,7 +95,6 @@ class AppSnackbar {
       ),
       autoCloseDuration: duration,
       alignment: Alignment.topCenter,
-      showProgressBar: true,
     );
   }
 }
