@@ -43,11 +43,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoadingState());
     final result = await _signUpUseCase(
-      firstName: event.firstName,
-      lastName: event.lastName,
       email: event.email,
       password: event.password,
-      phoneNumber: event.phoneNumber,
     );
     switch (result) {
       case Success():

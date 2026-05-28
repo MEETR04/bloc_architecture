@@ -5,14 +5,14 @@ sealed class HomeState {}
 
 final class HomeInitial extends HomeState {}
 
-final class CategoryListLoadingState extends HomeState {}
+final class UserListLoadingState extends HomeState {}
 
-final class CategoryListLoadedState extends HomeState {
-  CategoryListLoadedState({required this.categories});
-  final List<Category> categories;
+final class UserListLoadedState extends HomeState {
+  UserListLoadedState({required this.users});
+  final List<ReqresUser> users;
 }
 
-final class CategoryListFailedState extends HomeState {
-  CategoryListFailedState({required this.errorMessage});
+final class UserListFailedState extends HomeState {
+  UserListFailedState({required this.errorMessage});
   final String errorMessage;
 }

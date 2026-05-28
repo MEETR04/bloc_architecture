@@ -77,16 +77,24 @@ class HttpLoggerInterceptor extends Interceptor {
     }
     buffer.write('└${'─' * 79}');
 
+    // stamp start time so response/error can compute elapsed duration
+    options.extra['_requestStartMs'] = DateTime.now().millisecondsSinceEpoch;
+
     _logger.i(buffer.toString());
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(var response, ResponseInterceptorHandler handler) {
+    final startMs = response.requestOptions.extra['_requestStartMs'] as int?;
+    final elapsed = startMs != null
+        ? '${DateTime.now().millisecondsSinceEpoch - startMs}ms'
+        : '?ms';
+
     final buffer = StringBuffer()
       ..writeln('┌${'─' * 79}')
       ..writeln(
-        '│ 📥 RESPONSE [${response.statusCode} ${response.statusMessage ?? ''}] ${response.requestOptions.uri}',
+        '│ 📥 RESPONSE [${response.statusCode} ${response.statusMessage ?? ''}]  ⏱ $elapsed  ${response.requestOptions.uri}',
       )
       ..writeln('├${'─' * 79}');
 
@@ -105,10 +113,15 @@ class HttpLoggerInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    final startMs = err.requestOptions.extra['_requestStartMs'] as int?;
+    final elapsed = startMs != null
+        ? '${DateTime.now().millisecondsSinceEpoch - startMs}ms'
+        : '?ms';
+
     final buffer = StringBuffer()
       ..writeln('┌${'─' * 79}')
       ..writeln(
-        '│ ⚠️ ERROR [${err.response?.statusCode ?? 'No Status'}] ${err.requestOptions.uri}',
+        '│ ⚠️ ERROR [${err.response?.statusCode ?? 'No Status'}]  ⏱ $elapsed  ${err.requestOptions.uri}',
       )
       ..writeln('├${'─' * 79}')
       ..writeln('│ Message: ${err.message}');

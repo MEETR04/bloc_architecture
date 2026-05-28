@@ -3,7 +3,7 @@ import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:bloc_architecture/features/auth/bloc/auth_bloc.dart';
 import 'package:bloc_architecture/routes/app_routes.dart';
 import 'package:bloc_architecture/routes/app_routes.gr.dart';
-import 'package:bloc_architecture/values/app_colors.dart';
+import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:bloc_architecture/widgets/app_button.dart';
 import 'package:bloc_architecture/widgets/app_snackbar.dart';
 import 'package:bloc_architecture/widgets/app_textfield.dart';
@@ -20,19 +20,13 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -59,65 +53,52 @@ class _SignUpPageState extends State<SignUpPage> {
             if (state is AuthLoadingState) {
               return const CircularProgressIndicator();
             }
-            return SafeArea(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppTextField(
-                      controller: _firstNameController,
-                      hintText: 'Enter First Name',
-                      textInputAction: TextInputAction.next,
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppTextField(
+                    controller: _emailController,
+                    hintText: 'Enter Email',
+                    isEmail: true,
+                  ),
+                  10.verticalSpace,
+                  AppTextField(
+                    controller: _passwordController,
+                    hintText: 'Enter Password',
+                    isPassword: true,
+                  ),
+                  20.verticalSpace,
+                  AppButton(
+                    text: 'Sign Up',
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                        SignUpButtonPressedEvent(
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                        ),
+                      );
+                    },
+                  ),
+                  20.verticalSpace,
+                  InkWell(
+                    onTap: () => appRouter.replaceAll([const LoginRoute()]),
+                    child: Text(
+                      'Already have an account? Sign In',
+                      style: AppTextStyle.bodyMedium.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                    10.verticalSpace,
-                    AppTextField(
-                      controller: _lastNameController,
-                      hintText: 'Enter Last Name',
-                      textInputAction: TextInputAction.next,
-                    ),
-                    10.verticalSpace,
-                    AppTextField(
-                      controller: _phoneNumberController,
-                      hintText: 'Enter Phone Number',
-                      isPhoneNumber: true,
-                      textInputAction: TextInputAction.next,
-                    ),
-                    10.verticalSpace,
-                    AppTextField(
-                      controller: _emailController,
-                      hintText: 'Enter Email',
-                      isEmail: true,
-                      textInputAction: TextInputAction.next,
-                    ),
-                    10.verticalSpace,
-                    AppTextField(
-                      controller: _passwordController,
-                      hintText: 'Enter Password',
-                      isPassword: true,
-                      textInputAction: TextInputAction.done,
-                    ),
-                    20.verticalSpace,
-                    AppButton(
-                      text: 'Sign Up',
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                          SignUpButtonPressedEvent(
-                            firstName: _firstNameController.text.trim(),
-                            lastName: _lastNameController.text.trim(),
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
-                            phoneNumber: _phoneNumberController.text.trim(),
-                          ),
-                        );
-                      },
-                      buttonBgColor: AppColors.primary,
-                      horizontalPadding: 15.w,
-                      height: 50.h,
-                      buttonRadius: 10.r,
-                    ),
-                  ],
-                ),
+                  ),
+                  // Hint for reqres.in predefined emails
+                  20.verticalSpace,
+                  Text(
+                    'Use: eve.holt@reqres.in / pistol',
+                    style: AppTextStyle.bodySmall.copyWith(color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             );
           },

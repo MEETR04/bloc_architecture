@@ -1,8 +1,7 @@
-import 'package:bloc_architecture/core/api/base_response/base_response.dart';
 import 'package:bloc_architecture/core/api/exceptions/app_exception.dart';
 import 'package:bloc_architecture/features/home/data/datasource/home_api.dart';
 import 'package:bloc_architecture/features/home/domain/repository/i_home_repository.dart';
-import 'package:bloc_architecture/features/home/models/response/category_list_response_model.dart';
+import 'package:bloc_architecture/features/home/models/response/reqres_user_model.dart';
 import 'package:dio/dio.dart';
 
 class HomeRepository implements IHomeRepository {
@@ -10,12 +9,15 @@ class HomeRepository implements IHomeRepository {
   final HomeApi _homeApi;
 
   @override
-  Future<BaseResponse<List<Category>>> getCategories() async {
+  Future<List<ReqresUser>> getUsers({int page = 1}) async {
     try {
-      return await _homeApi.getCategories();
+      final response = await _homeApi.getUsers(page: page);
+      return response.data ?? [];
     } on DioException catch (e) {
-      final msg = e.response?.data['error']?.toString();
-      throw AppException(msg ?? e.error.toString());
+      final msg = e.response?.data is Map
+          ? e.response?.data['error']?.toString()
+          : null;
+      throw AppException(msg ?? e.message ?? e.error.toString());
     } catch (e) {
       throw AppException(e.toString());
     }

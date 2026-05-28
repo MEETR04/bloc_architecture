@@ -1,6 +1,6 @@
 class APIEndPoints {
-  static const baseUrl = 'https://api.example.com/v1';
-  static const login = '/auth/login';
-  static const String getCategory = '/app/getCategory';
-  static const String register = '/auth/signUp';
+  static const baseUrl = 'https://reqres.in/api';
+  static const login = '/login';
+  static const register = '/register';
+  static const getUsers = '/users';
 }

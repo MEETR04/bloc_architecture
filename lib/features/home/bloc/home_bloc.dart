@@ -1,32 +1,32 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_architecture/core/utils/app_result.dart';
-import 'package:bloc_architecture/features/home/domain/usecases/get_categories_use_case.dart';
-import 'package:bloc_architecture/features/home/models/response/category_list_response_model.dart';
-import 'package:flutter/foundation.dart' hide Category;
+import 'package:bloc_architecture/features/home/domain/usecases/get_users_use_case.dart';
+import 'package:bloc_architecture/features/home/models/response/reqres_user_model.dart';
+import 'package:flutter/foundation.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc({required GetCategoriesUseCase getCategoriesUseCase})
-    : _getCategoriesUseCase = getCategoriesUseCase,
-      super(HomeInitial()) {
-    on<FetchCategoriesEvent>(_onFetchCategories);
+  HomeBloc({required GetUsersUseCase getUsersUseCase})
+      : _getUsersUseCase = getUsersUseCase,
+        super(HomeInitial()) {
+    on<FetchUsersEvent>(_onFetchUsers);
   }
-  final GetCategoriesUseCase _getCategoriesUseCase;
+  final GetUsersUseCase _getUsersUseCase;
 
-  Future<void> _onFetchCategories(
-    FetchCategoriesEvent event,
+  Future<void> _onFetchUsers(
+    FetchUsersEvent event,
     Emitter<HomeState> emit,
   ) async {
-    emit(CategoryListLoadingState());
-    final result = await _getCategoriesUseCase();
+    emit(UserListLoadingState());
+    final result = await _getUsersUseCase(page: event.page);
     switch (result) {
       case Success(:final data):
-        emit(CategoryListLoadedState(categories: data));
+        emit(UserListLoadedState(users: data));
       case Failure(:final message):
         debugPrint('[HomeBloc] $message');
-        emit(CategoryListFailedState(errorMessage: message));
+        emit(UserListFailedState(errorMessage: message));
     }
   }
 }

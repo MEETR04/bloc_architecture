@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppSpacing {
   AppSpacing._();
 
-  // Spacing sizes (margins / paddings)
+  // Spacing sizes (margins / paddings/ radius)
   static double get s4 => 4.r;
   static double get s8 => 8.r;
   static double get s12 => 12.r;

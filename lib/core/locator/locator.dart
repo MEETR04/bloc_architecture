@@ -8,17 +8,13 @@ import 'package:bloc_architecture/features/auth/data/repository/auth_repository.
 import 'package:bloc_architecture/features/auth/domain/repository/i_auth_repository.dart';
 import 'package:bloc_architecture/features/auth/domain/usecases/login_use_case.dart';
 import 'package:bloc_architecture/features/auth/domain/usecases/sign_up_use_case.dart';
-import 'package:bloc_architecture/features/auth/models/response/sign_up_response_model.dart';
 import 'package:bloc_architecture/features/home/bloc/home_bloc.dart';
 import 'package:bloc_architecture/features/home/data/datasource/home_api.dart';
 import 'package:bloc_architecture/features/home/data/repository/home_repository.dart';
 import 'package:bloc_architecture/features/home/domain/repository/i_home_repository.dart';
-import 'package:bloc_architecture/features/home/domain/usecases/get_categories_use_case.dart';
+import 'package:bloc_architecture/features/home/domain/usecases/get_users_use_case.dart';
 import 'package:bloc_architecture/routes/app_routes.dart';
-import 'package:bloc_architecture/service/enc_service.dart';
-import 'package:bloc_architecture/service/get_device_info.dart';
 import 'package:bloc_architecture/service/network_service.dart';
-import 'package:bloc_architecture/values/app_constants.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,58 +32,44 @@ Future<void> setupLocator() async {
   locator.registerSingletonAsync<AppDB>(AppDB.getInstance);
   await locator.isReady<AppDB>();
 
-  // 2. Encryption (key sourced from AppConstants — single source of truth)
-  locator.registerSingleton<EncService>(
-    EncService(aesKey: AppConstants.aesKey),
-  );
-
-  // 3. Hive adapters
-  Hive.registerAdapter(SignUpResponseModelAdapter());
-
-  // 4. Router
+  // 2. Router
   locator.registerSingleton<AppRouter>(AppRouter());
 
-  // 5. NetworkService
+  // 3. Network layer
+  await ApiModule().provides();
   final networkService = NetworkService();
   locator.registerSingleton<NetworkService>(networkService);
   await networkService.initialize();
 
-  // 6. Network layer (Dio, Retrofit)
-  await ApiModule().provides();
-
-  // 7. DeviceInfo — pre-fetched async singleton
-  locator.registerSingletonAsync<DeviceInfo>(DeviceInfo.fetch);
-  await locator.isReady<DeviceInfo>();
-
-  // 7. Auth — data layer
+  // 4. Auth — data layer
   locator
     ..registerLazySingleton<IAuthRepository>(
       () => AuthRepository(locator<AuthApi>()),
     )
-    // 8. Auth — domain (use cases)
+    // 5. Auth — domain
     ..registerLazySingleton<LoginUseCase>(
       () => LoginUseCase(locator<IAuthRepository>()),
     )
     ..registerLazySingleton<SignUpUseCase>(
-      () => SignUpUseCase(locator<IAuthRepository>(), locator<DeviceInfo>()),
+      () => SignUpUseCase(locator<IAuthRepository>()),
     )
-    // 9. Auth — presentation
-    ..registerLazySingleton<AuthBloc>(
+    // 6. Auth — presentation
+    ..registerFactory<AuthBloc>(
       () => AuthBloc(
         loginUseCase: locator<LoginUseCase>(),
         signUpUseCase: locator<SignUpUseCase>(),
       ),
     )
-    // 10. Home — data layer
+    // 7. Home — data layer
     ..registerLazySingleton<IHomeRepository>(
       () => HomeRepository(locator<HomeApi>()),
     )
-    // 11. Home — domain
-    ..registerLazySingleton<GetCategoriesUseCase>(
-      () => GetCategoriesUseCase(locator<IHomeRepository>()),
+    // 8. Home — domain
+    ..registerLazySingleton<GetUsersUseCase>(
+      () => GetUsersUseCase(locator<IHomeRepository>()),
     )
-    // 12. Home — presentation
-    ..registerLazySingleton<HomeBloc>(
-      () => HomeBloc(getCategoriesUseCase: locator<GetCategoriesUseCase>()),
+    // 9. Home — presentation
+    ..registerFactory<HomeBloc>(
+      () => HomeBloc(getUsersUseCase: locator<GetUsersUseCase>()),
     );
 }

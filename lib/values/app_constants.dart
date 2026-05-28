@@ -9,4 +9,5 @@ abstract final class AppConstants {
   static const String defaultOtp = '1234';
   static const String defaultLoginType = 'A';
   static const String defaultUserType = 'Parent';
+  static const String reqresApiKey = 'free_user_3EL7qD1vk5SKSKhg1oaoxFkSv5A';
 }

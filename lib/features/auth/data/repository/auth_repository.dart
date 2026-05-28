@@ -1,4 +1,3 @@
-import 'package:bloc_architecture/core/api/base_response/base_response.dart';
 import 'package:bloc_architecture/core/api/exceptions/app_exception.dart';
 import 'package:bloc_architecture/features/auth/data/datasource/auth_api.dart';
 import 'package:bloc_architecture/features/auth/domain/repository/i_auth_repository.dart';
@@ -7,7 +6,6 @@ import 'package:bloc_architecture/features/auth/models/request/sign_up_req_model
 import 'package:bloc_architecture/features/auth/models/response/login_response_model.dart';
 import 'package:bloc_architecture/features/auth/models/response/sign_up_response_model.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 class AuthRepository implements IAuthRepository {
   const AuthRepository(this._authApi);
@@ -18,30 +16,25 @@ class AuthRepository implements IAuthRepository {
     try {
       return await _authApi.login(request);
     } on DioException catch (e) {
-      final error = e.error;
-      if (error is AppException) {
-        throw error;
-      }
-      throw AppException(e.message ?? e.toString());
+      final msg = e.response?.data is Map
+          ? e.response?.data['error']?.toString()
+          : null;
+      throw AppException(msg ?? e.message ?? e.error.toString());
+    } catch (e) {
+      throw AppException(e.toString());
     }
   }
 
   @override
-  Future<BaseResponse<SignUpResponseModel>> signUp(
-    SignUpReqModel request,
-  ) async {
+  Future<SignUpResponseModel> signUp(SignUpReqModel request) async {
     try {
       return await _authApi.register(request);
     } on DioException catch (e) {
-      String? msg;
-      final data = e.response?.data;
-      if (data is Map) {
-        msg = data['message']?.toString();
-      }
-      msg ??= e.message;
-      throw AppException(msg ?? e.error?.toString());
+      final msg = e.response?.data is Map
+          ? e.response?.data['error']?.toString()
+          : null;
+      throw AppException(msg ?? e.message ?? e.error.toString());
     } catch (e) {
-      debugPrint(e.toString());
       throw AppException(e.toString());
     }
   }

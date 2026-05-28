@@ -2,8 +2,12 @@ import 'package:auto_route/annotations.dart';
 import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:bloc_architecture/features/home/bloc/home_bloc.dart';
 import 'package:bloc_architecture/values/app_spacing.dart';
+import 'package:bloc_architecture/values/app_text_style.dart';
+import 'package:bloc_architecture/widgets/auto_refresh_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -11,51 +15,93 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider<HomeBloc>(
-    create: (_) => locator<HomeBloc>()..add(FetchCategoriesEvent()),
-    child: Scaffold(
-      appBar: AppBar(
-        title: const Text('Categories'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state is CategoryListLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is CategoryListLoadedState) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<HomeBloc>().add(FetchCategoriesEvent());
-              },
-              child: ListView.builder(
-                itemCount: state.categories.length,
-                itemBuilder: (context, index) {
-                  final category = state.categories[index];
-                  return ListTile(title: Text(category.name));
-                },
-              ),
-            );
-          }
-          if (state is CategoryListFailedState) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(state.errorMessage),
-                  AppSpacing.vs12,
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<HomeBloc>().add(FetchCategoriesEvent());
-                    },
-                    child: const Text('Retry'),
+    create: (_) => locator<HomeBloc>()..add(FetchUsersEvent()),
+    child: Builder(
+      builder: (context) => Scaffold(
+        appBar: AppBar(title: const Text('Users')),
+        body: AutoRefreshBuilder(
+          onRetry: () => context.read<HomeBloc>().add(FetchUsersEvent()),
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is UserListLoadingState) {
+                return Skeletonizer(
+                  enabled: true,
+                  child: ListView.builder(
+                    padding: AppSpacing.symmetricHS16,
+                    itemCount: 6,
+                    itemBuilder: (context, index) => Card(
+                      child: ListTile(
+                        leading: const CircleAvatar(child: SizedBox.shrink()),
+                        title: Text(
+                          'User Full Name',
+                          style: AppTextStyle.headingSmall.copyWith(
+                            fontSize: 15.r,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'user.email@example.com',
+                          style: AppTextStyle.bodySmall,
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ),
-            );
-          }
-          return const SizedBox.shrink();
-        },
+                );
+              }
+              if (state is UserListLoadedState) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<HomeBloc>().add(FetchUsersEvent());
+                  },
+                  child: ListView.builder(
+                    padding: AppSpacing.symmetricHS16,
+                    itemCount: state.users.length,
+                    itemBuilder: (context, index) {
+                      final user = state.users[index];
+                      return Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: user.avatar != null
+                                ? NetworkImage(user.avatar!)
+                                : null,
+                            child: user.avatar == null
+                                ? Text(user.firstName?[0] ?? '?')
+                                : null,
+                          ),
+                          title: Text(
+                            user.fullName,
+                            style: AppTextStyle.headingSmall,
+                          ),
+                          subtitle: Text(
+                            user.email ?? '',
+                            style: AppTextStyle.bodySmall,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+              if (state is UserListFailedState) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(state.errorMessage),
+                      AppSpacing.vs12,
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<HomeBloc>().add(FetchUsersEvent());
+                        },
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
       ),
     ),
   );

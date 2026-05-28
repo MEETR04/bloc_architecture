@@ -3,5 +3,7 @@ part of 'home_bloc.dart';
 @immutable
 sealed class HomeEvent {}
 
-/// Triggers a category list fetch from the API.
-class FetchCategoriesEvent extends HomeEvent {}
+class FetchUsersEvent extends HomeEvent {
+  FetchUsersEvent({this.page = 1});
+  final int page;
+}

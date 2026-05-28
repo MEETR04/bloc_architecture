@@ -8,6 +8,7 @@ class LoginRequestModel {
 
   factory LoginRequestModel.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestModelFromJson(json);
+
   @JsonKey(name: 'email')
   final String? email;
 

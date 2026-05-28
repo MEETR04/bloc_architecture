@@ -1,74 +1,60 @@
-import 'dart:convert';
-
 import 'package:bloc_architecture/core/api/exceptions/app_exception.dart';
 import 'package:bloc_architecture/core/api/exceptions/dio_exception_utils.dart';
-import 'package:bloc_architecture/core/db/app_db.dart';
-import 'package:bloc_architecture/core/locator/locator.dart';
-import 'package:bloc_architecture/service/enc_service.dart';
+import 'package:bloc_architecture/values/app_constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class CustomInterceptors extends Interceptor {
   @override
-  Future<dynamic> onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
-    options.headers['content-type'] = 'text/plain';
-    options.headers['contentType'] = 'text/plain';
-    options.headers['responseType'] = 'text/plain';
-    options.responseType = ResponseType.plain;
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    // AES encryption commented out — reqres.in uses plain JSON
+    // options.headers['content-type'] = 'text/plain';
+    // options.headers['contentType'] = 'text/plain';
+    // options.headers['responseType'] = 'text/plain';
+    // options.responseType = ResponseType.plain;
+    // final enc = locator.get<EncService>();
+    // options.headers.putIfAbsent("api-key", () => enc.encrypt(appDB.apiKey));
+    // if (appDB.token.isNotEmpty) {
+    //   options.headers['token'] = enc.encrypt(appDB.token);
+    // }
+    // if (options.data != null) {
+    //   options.data = enc.encrypt(jsonEncode(options.data));
+    // }
 
-    final appDB = locator.get<AppDB>();
-    final enc = locator.get<EncService>();
-    options.headers.putIfAbsent('api-key', () => enc.encrypt(appDB.apiKey));
     options.headers.putIfAbsent('accept-language', () => 'en');
-    if (appDB.token.isNotEmpty) {
-      options.headers['token'] = enc.encrypt(appDB.token);
-    }
-    if (options.data != null) {
-      options.data = enc.encrypt(jsonEncode(options.data));
-    }
+    options.headers.putIfAbsent('content-type', () => 'application/json');
+    options.headers.putIfAbsent('x-api-key', () => AppConstants.reqresApiKey);
 
-    return handler.next(options);
+    handler.next(options);
   }
 
   @override
-  Future<dynamic> onResponse(
-    var response,
+  void onResponse(
+    Response<dynamic> response,
     ResponseInterceptorHandler handler,
-  ) async {
-    if (kDebugMode) debugPrint(' RESPONSE : ${response.data}');
-    final enc = locator.get<EncService>();
-    response.data = jsonDecode(enc.decrypt(response.data.toString()));
+  ) {
+    // AES decryption commented out — reqres.in returns plain JSON
+    // final enc = locator.get<EncService>();
+    // response.data = jsonDecode(enc.decrypt(response.data.toString()));
 
-    return handler.next(response);
+    if (kDebugMode) {
+      debugPrint(
+        'RESPONSE [${response.statusCode}]: ${response.requestOptions.path}',
+      );
+    }
+
+    handler.next(response);
   }
 
   @override
-  Future<dynamic> onError(
-    DioException err,
-    ErrorInterceptorHandler handler,
-  ) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     try {
-      final enc = locator.get<EncService>();
-
-      // Check if response data exists and looks encrypted
-      if (err.response?.data != null && err.response?.data is String) {
-        try {
-          final decrypted = enc.decrypt(err.response!.data.toString());
-          err.response!.data = jsonDecode(decrypted);
-        } catch (_) {
-          // If decryption fails, just leave it as-is (maybe plain text)
-        }
-      }
-
       DioExceptionUtil.handleError(err);
     } on AppException catch (e) {
-      debugPrint('DioException Interceptor ${err.response?.data}');
-      debugPrint('AppException Interceptor ${e.message}');
+      debugPrint('DioException: ${err.response?.data}');
+      debugPrint('AppException: ${e.message}');
       throw AppException(e.message);
     }
-    return handler.next(err);
+    handler.next(err);
   }
 }

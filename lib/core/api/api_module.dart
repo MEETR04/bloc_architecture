@@ -29,12 +29,9 @@ class ApiModule {
           if (status == 401) return false;
           return true;
         },
-        responseType: ResponseType.plain,
-        headers: const {
-          'content-type': 'text/plain',
-          'contentType': 'text/plain',
-          'responseType': 'text/plain',
-        },
+        // reqres.in is standard JSON — no custom responseType needed
+        contentType: 'application/json',
+        responseType: ResponseType.json,
       );
 
     if (kDebugMode) {

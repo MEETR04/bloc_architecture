@@ -1,5 +1,4 @@
 import 'package:bloc_architecture/core/api/api_endpoints.dart';
-import 'package:bloc_architecture/core/api/base_response/base_response.dart';
 import 'package:bloc_architecture/features/auth/models/request/login_request_model.dart';
 import 'package:bloc_architecture/features/auth/models/request/sign_up_req_model.dart';
 import 'package:bloc_architecture/features/auth/models/response/login_response_model.dart';
@@ -14,11 +13,11 @@ part 'auth_api.g.dart';
 abstract class AuthApi {
   factory AuthApi(Dio dio, {String baseUrl}) = _AuthApi;
 
+  // reqres.in returns { token } directly — no BaseResponse wrapper
   @POST(APIEndPoints.login)
-  Future<LoginResponseModel> login(@Body() LoginRequestModel loginRequestModel);
+  Future<LoginResponseModel> login(@Body() LoginRequestModel body);
 
+  // reqres.in returns { id, token } directly — no BaseResponse wrapper
   @POST(APIEndPoints.register)
-  Future<BaseResponse<SignUpResponseModel>> register(
-    @Body() SignUpReqModel signUpReqModel,
-  );
+  Future<SignUpResponseModel> register(@Body() SignUpReqModel body);
 }

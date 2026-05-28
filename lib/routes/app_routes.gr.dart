@@ -17,7 +17,10 @@ import 'package:bloc_architecture/features/home/ui/home_page.dart' as _i1;
 /// [_i1.HomePage]
 class HomeRoute extends _i4.PageRouteInfo<void> {
   const HomeRoute({List<_i4.PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+      : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'HomeRoute';
 
@@ -33,7 +36,10 @@ class HomeRoute extends _i4.PageRouteInfo<void> {
 /// [_i2.LoginPage]
 class LoginRoute extends _i4.PageRouteInfo<void> {
   const LoginRoute({List<_i4.PageRouteInfo>? children})
-    : super(LoginRoute.name, initialChildren: children);
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'LoginRoute';
 
@@ -49,7 +55,10 @@ class LoginRoute extends _i4.PageRouteInfo<void> {
 /// [_i3.SignUpPage]
 class SignUpRoute extends _i4.PageRouteInfo<void> {
   const SignUpRoute({List<_i4.PageRouteInfo>? children})
-    : super(SignUpRoute.name, initialChildren: children);
+      : super(
+          SignUpRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'SignUpRoute';
 

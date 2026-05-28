@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_architecture/routes/app_routes.dart';
 import 'package:bloc_architecture/values/app_colors.dart';
+import 'package:bloc_architecture/values/app_spacing.dart';
 import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:bloc_architecture/widgets/app_button.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -73,16 +74,18 @@ class NetworkService {
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppSpacing.s24),
+            ),
           ),
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.r, vertical: 32.r),
+              padding: EdgeInsets.all(AppSpacing.s24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(20.r),
+                    padding: AppSpacing.allS12,
                     decoration: BoxDecoration(
                       color: AppColors.error.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
@@ -93,7 +96,7 @@ class NetworkService {
                       color: AppColors.error,
                     ),
                   ),
-                  24.verticalSpace,
+                  AppSpacing.vs24,
                   Text(
                     'No Internet Connection',
                     style: AppTextStyle.headingLarge.copyWith(
@@ -101,7 +104,7 @@ class NetworkService {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  12.verticalSpace,
+                  AppSpacing.vs12,
                   Text(
                     'Please check your internet connection and try again to continue using the app.',
                     textAlign: TextAlign.center,
@@ -111,11 +114,11 @@ class NetworkService {
                       overflow: TextOverflow.visible,
                     ),
                   ),
-                  32.verticalSpace,
+                  AppSpacing.vs32,
                   AppButton(
                     text: 'Retry',
                     onPressed: _retry,
-                    height: 50.h,
+                    height: 50.r,
                     buttonRadius: 16.r,
                     buttonBgColor: AppColors.primary,
                   ),
