@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
@@ -10,7 +11,12 @@ class HttpLogPrinter extends LogPrinter {
     final level = event.level;
 
     String color;
-    if (level == Level.info) {
+    String resetColor = '\x1B[0m';
+
+    if (Platform.isIOS) {
+      color = '';
+      resetColor = '';
+    } else if (level == Level.info) {
       // Request -> Green
       color = '\x1B[32m';
     } else if (level == Level.warning) {
@@ -24,7 +30,7 @@ class HttpLogPrinter extends LogPrinter {
     }
 
     final lines = message.toString().split('\n');
-    return lines.map((line) => '$color$line\x1B[0m').toList();
+    return lines.map((line) => '$color$line$resetColor').toList();
   }
 }
 
