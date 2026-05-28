@@ -5,8 +5,11 @@ import 'package:bloc_architecture/routes/app_routes.gr.dart';
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends RootStackRouter {
   AppRouter({super.navigatorKey});
+
   @override
-  // TODO: implement routes
+  RouteType get defaultRouteType => const RouteType.cupertino();
+
+  @override
   List<AutoRoute> get routes => [
     AutoRoute(page: LoginRoute.page, initial: true),
     AutoRoute(page: SignUpRoute.page),
