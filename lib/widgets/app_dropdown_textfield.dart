@@ -15,6 +15,7 @@ class AppDropdownTextField extends StatefulWidget {
     this.onChanged,
     this.focusNode,
     this.enabled = true,
+    this.borderColor,
   });
 
   final TextEditingController controller;
@@ -34,6 +35,7 @@ class AppDropdownTextField extends StatefulWidget {
 
   final FocusNode? focusNode;
   final bool enabled;
+  final Color? borderColor;
 
   @override
   State<AppDropdownTextField> createState() => _AppDropdownTextFieldState();
@@ -164,8 +166,7 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final borderColor = theme.colorScheme.outline.withValues(alpha: 0.4);
+    final fallbackBorderColor = widget.borderColor ?? Colors.grey.shade400;
 
     return TextFormField(
       focusNode: widget.focusNode,
@@ -178,43 +179,30 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       style: AppTextStyle.bodyLarge,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(16.w, 14.h, 0, 14.h),
+        isDense: false,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         hintText: widget.hint,
-        labelText: widget.hint,
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
-        labelStyle: AppTextStyle.bodyMedium.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-        hintStyle: AppTextStyle.bodyMedium.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-        errorStyle: AppTextStyle.bodySmall.copyWith(
-          color: theme.colorScheme.error,
-        ),
         suffixIcon: Icon(
           CupertinoIcons.chevron_down,
           size: 16.r,
           color: AppColors.grey400,
         ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: borderColor, width: 1),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: borderColor, width: 1),
-        ),
-        errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: borderColor, width: 1),
-        ),
-        focusedErrorBorder: UnderlineInputBorder(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: theme.colorScheme.primary,
-            width: 1.5,
+            color: fallbackBorderColor,
           ),
         ),
-        disabledBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: 1,
+            color: fallbackBorderColor,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: fallbackBorderColor,
           ),
         ),
       ),
