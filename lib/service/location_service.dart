@@ -115,7 +115,7 @@ class LocationService {
                       color: theme.colorScheme.primary,
                     ),
                   ),
-                  SizedBox(height: 16.h),
+                  16.verticalSpace,
                   Text(
                     'Location Access Required',
                     style: theme.textTheme.titleMedium?.copyWith(
@@ -123,7 +123,7 @@ class LocationService {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 8.h),
+                  8.verticalSpace,
                   Text(
                     permanentlyDenied
                         ? 'Location permissions are permanently denied. Please enable them in your device settings to use this feature.'
@@ -133,7 +133,7 @@ class LocationService {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 24.h),
+                  24.verticalSpace,
                   Row(
                     children: [
                       Expanded(
@@ -142,7 +142,7 @@ class LocationService {
                           child: const Text('Cancel'),
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      12.horizontalSpace,
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () async {
