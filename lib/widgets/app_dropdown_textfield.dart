@@ -90,80 +90,81 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
         final theme = Theme.of(context);
         return Material(
           color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          borderRadius: BorderRadius.vertical(top: const Radius.circular(16).r),
           child: SizedBox(
-            height: 300.h,
+            height: 300.r,
             child: Column(
               children: [
-              // Toolbar
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ).r,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: theme.colorScheme.outlineVariant,
-                      width: 0.5.r,
+                // Toolbar
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ).r,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: theme.colorScheme.outlineVariant,
+                        width: 0.5.r,
+                      ),
                     ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        'Cancel',
-                        style: AppTextStyle.bodyMedium.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          'Cancel',
+                          style: AppTextStyle.bodyMedium.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(widget.hint, style: AppTextStyle.labelLarge),
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        widget.pickedValueNotifier.value =
-                            items[selectedIndex.value];
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Done',
-                        style: AppTextStyle.labelLarge.copyWith(
-                          color: theme.colorScheme.primary,
+                      Text(widget.hint, style: AppTextStyle.labelLarge),
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          widget.pickedValueNotifier.value =
+                              items[selectedIndex.value];
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Done',
+                          style: AppTextStyle.labelLarge.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // Picker
-              Expanded(
-                child: CupertinoPicker(
-                  scrollController: FixedExtentScrollController(
-                    initialItem: initialIndex,
+                // Picker
+                Expanded(
+                  child: CupertinoPicker(
+                    scrollController: FixedExtentScrollController(
+                      initialItem: initialIndex,
+                    ),
+                    itemExtent: 40.r,
+                    onSelectedItemChanged: (index) =>
+                        selectedIndex.value = index,
+                    children: items
+                        .map(
+                          (item) => Center(
+                            child: Text(item, style: AppTextStyle.bodyLarge),
+                          ),
+                        )
+                        .toList(),
                   ),
-                  itemExtent: 40.h,
-                  onSelectedItemChanged: (index) => selectedIndex.value = index,
-                  children: items
-                      .map(
-                        (item) => Center(
-                          child: Text(item, style: AppTextStyle.bodyLarge),
-                        ),
-                      )
-                      .toList(),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
   }
 
   @override

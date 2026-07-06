@@ -7,3 +7,8 @@ class FetchUsersEvent extends HomeEvent {
   FetchUsersEvent({this.page = 1});
   final int page;
 }
+
+class SortUsersEvent extends HomeEvent {
+  SortUsersEvent({required this.isAscending});
+  final bool isAscending;
+}

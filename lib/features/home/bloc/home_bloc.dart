@@ -12,8 +12,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       : _getUsersUseCase = getUsersUseCase,
         super(HomeInitial()) {
     on<FetchUsersEvent>(_onFetchUsers);
+    on<SortUsersEvent>(_onSortUsers);
   }
   final GetUsersUseCase _getUsersUseCase;
+  bool _isAscending = true;
 
   Future<void> _onFetchUsers(
     FetchUsersEvent event,
@@ -23,10 +25,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final result = await _getUsersUseCase(page: event.page);
     switch (result) {
       case Success(:final data):
-        emit(UserListLoadedState(users: data));
+        final sorted = List<ReqresUser>.from(data);
+        _sortList(sorted);
+        emit(UserListLoadedState(users: sorted, isAscending: _isAscending));
       case Failure(:final message):
         debugPrint('[HomeBloc] $message');
         emit(UserListFailedState(errorMessage: message));
+    }
+  }
+
+  void _onSortUsers(SortUsersEvent event, Emitter<HomeState> emit) {
+    _isAscending = event.isAscending;
+    final currentState = state;
+    if (currentState is UserListLoadedState) {
+      final sorted = List<ReqresUser>.from(currentState.users);
+      _sortList(sorted);
+      emit(UserListLoadedState(users: sorted, isAscending: _isAscending));
+    }
+  }
+
+  void _sortList(List<ReqresUser> list) {
+    if (_isAscending) {
+      list.sort((a, b) => a.fullName.compareTo(b.fullName));
+    } else {
+      list.sort((a, b) => b.fullName.compareTo(a.fullName));
     }
   }
 }
