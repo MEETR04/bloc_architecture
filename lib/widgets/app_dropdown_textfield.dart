@@ -88,22 +88,24 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
       context: context,
       builder: (context) {
         final theme = Theme.of(context);
-        return Container(
-          height: 300.h,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-          ),
-          child: Column(
-            children: [
+        return Material(
+          color: theme.colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          child: SizedBox(
+            height: 300.h,
+            child: Column(
+              children: [
               // Toolbar
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ).r,
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       color: theme.colorScheme.outlineVariant,
-                      width: 0.5,
+                      width: 0.5.r,
                     ),
                   ),
                 ),
@@ -146,8 +148,7 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
                     initialItem: initialIndex,
                   ),
                   itemExtent: 40.h,
-                  onSelectedItemChanged: (index) =>
-                      selectedIndex.value = index,
+                  onSelectedItemChanged: (index) => selectedIndex.value = index,
                   children: items
                       .map(
                         (item) => Center(
@@ -159,9 +160,10 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
               ),
             ],
           ),
-        );
-      },
-    );
+        ),
+      );
+    },
+  );
   }
 
   @override
@@ -180,7 +182,10 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
       style: AppTextStyle.bodyLarge,
       decoration: InputDecoration(
         isDense: false,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         hintText: widget.hint,
         suffixIcon: Icon(
           CupertinoIcons.chevron_down,
@@ -189,21 +194,15 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: fallbackBorderColor,
-          ),
+          borderSide: BorderSide(color: fallbackBorderColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: fallbackBorderColor,
-          ),
+          borderSide: BorderSide(color: fallbackBorderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: fallbackBorderColor,
-          ),
+          borderSide: BorderSide(color: fallbackBorderColor),
         ),
       ),
     );
