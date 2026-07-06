@@ -103,6 +103,7 @@ lib/
 ├── service/                             # Global services layer
 │   ├── enc_service.dart                 # AES key derivation & payload encryption utility
 │   ├── get_device_info.dart             # Platform parameters collector (OS details, UUID)
+│   ├── location_service.dart            # High-accuracy geolocation & reverse geocoding utility
 │   └── network_service.dart             # Connection monitor & bottom sheet trigger
 │
 ├── values/                              # Constant design tokens & utility extensions
@@ -358,3 +359,5 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 - **`image_picker: ^1.1.2`** — photo/video capture and picker on iOS/Android.
 - **`permission_handler: ^11.3.1`** — permission request and check wrapper.
 - **`path: ^1.9.0`** — file path manipulation utility.
+- **`geocoding: ^3.0.0`** — geocoding and reverse geocoding utility.
+- **`geolocator: ^13.0.1`** — device coordinates tracker.
