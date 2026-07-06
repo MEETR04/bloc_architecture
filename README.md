@@ -285,7 +285,30 @@ To fully rename the application, update the name parameter in the following loca
 
 ## 🚀 CI/CD Pipeline
 The project includes a pre-configured GitHub Actions workflow located at [.github/workflows/dart.yml](file:///Users/hyperlink/StudioProjects/bloc_architecture/.github/workflows/dart.yml) that:
-1. Installs the exact Flutter version (`3.38.9`).
+1. Installs the exact Flutter version (`3.44.3`).
 2. Leverages caching for the SDK and pub dependencies (`cache: true`) to optimize execution times.
 3. Automatically runs lint checks (`flutter analyze`) and execution tests (`flutter test`) on pushes and pull requests to the `main` branch.
+4. Uses `actions/checkout@v5` (Node.js 24 runtime) — `@v4` is deprecated on current GitHub Actions runners.
 
+---
+
+## 📋 Changelog
+
+### Flutter 3.44.3 Migration
+- **Flutter SDK**: Upgraded from `3.38.9` → `3.44.3` (stable).
+- **CI**: Bumped `actions/checkout` `v4` → `v5` (Node.js 24 runtime, resolves runner deprecation warning).
+
+### iOS: CocoaPods → Swift Package Manager
+- Ran `pod deintegrate` to strip all CocoaPods build phases and xcconfig references from `Runner.xcodeproj`.
+- Removed `#include` lines for `Pods-Runner.debug.xcconfig` / `Pods-Runner.release.xcconfig` from `ios/Flutter/Debug.xcconfig` and `ios/Flutter/Release.xcconfig`.
+- Removed stale `Pods/Pods.xcodeproj` reference from `Runner.xcworkspace/contents.xcworkspacedata`.
+- Deleted `Podfile`, `Podfile.lock`, and `ios/.symlinks/`.
+- Flutter tooling now manages plugin linking via the auto-generated `FlutterGeneratedPluginSwiftPackage` SPM package.
+
+### Dependency Fixes
+- **`device_info_plus`**: Pinned to `12.1.0` (exact). Versions `12.2.0`–`13.2.0` call `[NSProcessInfo isiOSAppOnVision]` guarded by `@available(iOS 26.1, *)`, which fails to compile against Xcode 26.0.1's iOS 26.0 SDK headers.
+- **`dio 5.10.0`**: Added missing `DioExceptionType.transformTimeout` case in `dio_exception_utils.dart` — new enum value introduced in this release caused an exhaustiveness error in the switch statement.
+
+### `AppListView` — `ScrollCacheExtent` Migration
+- Replaced deprecated `cacheExtent: double?` parameter on all three `ListView` constructors (`normal`, `builder`, `separated`) with `scrollCacheExtent: ScrollCacheExtent.pixels(...)` — `cacheExtent` was deprecated after Flutter `3.41.0-0.0.pre`.
+- The public `cacheExtent: double?` field on `AppListView` is preserved for backward compatibility; the conversion happens internally at the `ListView` call site.
