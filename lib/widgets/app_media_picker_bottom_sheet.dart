@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bloc_architecture/values/app_constants.dart';
 import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
@@ -16,8 +17,8 @@ enum PickedFileType { image, video, file }
 
 enum SourceType { camera, gallery }
 
-class MediaPickerSheet extends StatelessWidget {
-  const MediaPickerSheet({
+class AppMediaPickerBottomSheet extends StatelessWidget {
+  const AppMediaPickerBottomSheet({
     super.key,
     required this.pickFileType,
     required this.selectionType,
@@ -474,17 +475,11 @@ class _RoundedButton extends StatelessWidget {
       );
 }
 
-bool isImageFile(String filePath) {
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
-  return imageExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
-}
+bool isImageFile(String filePath) =>
+    AppConstants.imageExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
 
-bool isVideoFile(String filePath) {
-  const videoExtensions = ['.mp4', '.mkv', '.avi', '.mov', '.webm'];
-  return videoExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
-}
+bool isVideoFile(String filePath) =>
+    AppConstants.videoExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
 
-bool isDocFile(String filePath) {
-  const docExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt'];
-  return docExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
-}
+bool isDocFile(String filePath) =>
+    AppConstants.docExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));

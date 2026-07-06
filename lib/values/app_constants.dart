@@ -15,4 +15,9 @@ abstract final class AppConstants {
   static const String sortAZ = 'A → Z';
   static const String sortZA = 'Z → A';
   static const List<String> sortOptions = [sortAZ, sortZA];
+
+  // Media Extensions
+  static const List<String> imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+  static const List<String> videoExtensions = ['.mp4', '.mkv', '.avi', '.mov', '.webm'];
+  static const List<String> docExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt'];
 }

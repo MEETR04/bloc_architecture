@@ -129,7 +129,7 @@ lib/
     ├── custom_app_bar.dart
     ├── glass_container.dart
     ├── glass_dialog.dart
-    └── media_picker_sheet.dart
+    └── app_media_picker_bottom_sheet.dart
 ```
 
 ---
@@ -173,7 +173,7 @@ The project includes custom-built, highly-optimized components that implement de
 
 * **Rounded Corners**: Integrates a default shape layout with rounded bottom corners (`20.0`) customizable per screen.
 
-### 9. `MediaPickerSheet`
+### 9. `AppMediaPickerBottomSheet`
 * **Adaptive Bottom Sheet Picker**: Displays an elegant modal sheet prompting users to select source (Camera/Gallery) for image/video capture, with optional document picking via `file_picker`.
 * **Automatic Image Compression**: Automatically compresses images larger than 150 KB down using `flutter_image_compress` at quality 10 before passing back to the handler callback.
 * **Unified Permission Management**: Intercepts camera/storage permission requests transparently across platforms using `permission_handler` and redirects permanently denied users to app settings.
@@ -348,7 +348,7 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 - **`AppImage`** (`widgets/app_image.dart`): Universal image widget supporting remote URLs (disk-cached via `cached_network_image`), local files, and assets. Includes animated shimmer placeholder, theme-aware fallback with initials or icon, and both circular and rectangular layout modes.
 - **`AppDropdownTextField`** (`widgets/app_dropdown_textfield.dart`): Fully unified adaptive dropdown with a CupertinoPicker overlay, memory leak protection, and value notifier syncing. Used in `HomePage` for user sorting.
 - **`CustomAppBar` / `BaseAppBar`** (`widgets/custom_app_bar.dart`): Completely stateless and immutable app bar widget with customizable bottom borders, back navigation integration, and dynamic preferredSize support (used in `HomePage`, `LoginPage`, and `SignUpPage`).
-- **`MediaPickerSheet`** (`widgets/media_picker_sheet.dart`): Adaptive modal sheet for capturing and picking camera/gallery media and files, bundled with automatic image compression, unified permissions checking, and Material 3 design support.
+- **`AppMediaPickerBottomSheet`** (`widgets/app_media_picker_bottom_sheet.dart`): Adaptive modal sheet for capturing and picking camera/gallery media and files, bundled with automatic image compression, unified permissions checking, and Material 3 design support.
 
 ### New Dependencies
 - **`cached_network_image: ^3.4.1`** — disk-cached network image loading used by `AppImage`.
