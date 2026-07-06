@@ -101,6 +101,7 @@ lib/
 │   └── app_routes.gr.dart               # Code-generated routing adapters
 │
 ├── service/                             # Global services layer
+│   ├── app_permission_handler.dart      # Unified location, camera, microphone, photos & storage permissions requester
 │   ├── enc_service.dart                 # AES key derivation & payload encryption utility
 │   ├── get_device_info.dart             # Platform parameters collector (OS details, UUID)
 │   ├── location_service.dart            # High-accuracy geolocation & reverse geocoding utility
