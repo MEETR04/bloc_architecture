@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:bloc_architecture/features/home/bloc/home_bloc.dart';
+import 'package:bloc_architecture/values/app_constants.dart';
 import 'package:bloc_architecture/values/app_spacing.dart';
 import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:bloc_architecture/widgets/app_dropdown_textfield.dart';
@@ -13,10 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-const _sortAZ = 'A → Z';
-const _sortZA = 'Z → A';
-const _sortOptions = [_sortAZ, _sortZA];
-
 @RoutePage()
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,8 +23,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _sortController = TextEditingController(text: _sortAZ);
-  final _sortNotifier = ValueNotifier<String>(_sortAZ);
+  final _sortController = TextEditingController(text: AppConstants.sortAZ);
+  final _sortNotifier = ValueNotifier<String>(AppConstants.sortAZ);
 
   @override
   void dispose() {
@@ -43,7 +40,8 @@ class _HomePageState extends State<HomePage> {
       builder: (context) => BlocListener<HomeBloc, HomeState>(
         listener: (context, state) {
           if (state is UserListLoadedState) {
-            final expectedValue = state.isAscending ? _sortAZ : _sortZA;
+            final expectedValue =
+                state.isAscending ? AppConstants.sortAZ : AppConstants.sortZA;
             if (_sortNotifier.value != expectedValue) {
               _sortNotifier.value = expectedValue;
               _sortController.text = expectedValue;
@@ -63,10 +61,12 @@ class _HomePageState extends State<HomePage> {
                     controller: _sortController,
                     pickedValueNotifier: _sortNotifier,
                     hint: 'Sort by name',
-                    items: _sortOptions,
+                    items: AppConstants.sortOptions,
                     onChanged: (value) {
                       context.read<HomeBloc>().add(
-                            SortUsersEvent(isAscending: value == _sortAZ),
+                            SortUsersEvent(
+                              isAscending: value == AppConstants.sortAZ,
+                            ),
                           );
                     },
                   ),

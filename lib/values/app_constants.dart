@@ -10,4 +10,9 @@ abstract final class AppConstants {
   static const String defaultLoginType = 'A';
   static const String defaultUserType = 'Parent';
   static const String reqresApiKey = 'free_user_3EL7qD1vk5SKSKhg1oaoxFkSv5A';
+
+  // Sorting Options
+  static const String sortAZ = 'A → Z';
+  static const String sortZA = 'Z → A';
+  static const List<String> sortOptions = [sortAZ, sortZA];
 }
