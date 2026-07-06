@@ -119,7 +119,9 @@ lib/
 │
 └── widgets/                             # Shared/Reusable UI components
     ├── app_button.dart
+    ├── app_image.dart
     ├── app_list_view.dart
+    ├── app_refresh_indicator.dart
     ├── app_snackbar.dart
     ├── app_textfield.dart
     ├── auto_refresh_builder.dart
@@ -150,6 +152,16 @@ The project includes custom-built, highly-optimized components that implement de
 ### 4. `AutoRefreshBuilder` (Connectivity State recovery)
 * **Connection Observer**: Listens to the `onInternetRestored` broadcast stream from the global `NetworkService`.
 * **Automatic Reloading**: Once connection recovery is detected, it automatically fires the `onRetry` callback (e.g. to request/re-fetch lists or reload views on network state transition from offline to online).
+
+### 5. `AppRefreshIndicator`
+* **Adaptive spinner**: Wraps `RefreshIndicator.adaptive` — renders a `CupertinoActivityIndicator` on iOS and a `CircularProgressIndicator` on Android automatically.
+* **Theme-aware color**: Pulls `color` from `Theme.of(context).colorScheme.primary`, respecting both light and dark themes without any hardcoded values.
+
+### 6. `AppImage`
+* **Multi-source resolution**: Resolves images in priority order — remote URL → local `File` → asset path → initials/fallback. Network images are disk-cached via `cached_network_image`.
+* **Shimmer placeholder**: Shows an animated shimmer skeleton (`shimmer_animation`) while a network image loads. The placeholder can be overridden via the `placeHolder` parameter.
+* **Theme-aware fallback**: When no source resolves, renders the first letter of `initial` (if provided) or a material icon, both sized proportionally to the container and colored from the active `ColorScheme`.
+* **Flexible sizing**: Supports both circular (`radius`) and rectangular (`height`/`width`) layouts; corner rounding is controlled via `roundedCorner` (defaults to `radius`).
 
 ---
 
@@ -195,6 +207,8 @@ The architecture is fully compatible with Android 15's forced edge-to-edge layou
 - **State Management**: [flutter_bloc](https://pub.dev/packages/flutter_bloc) — Structured, predictable state management.
 - **Dependency Injection**: [get_it](https://pub.dev/packages/get_it) — High performance service locator for lazy/async singletons.
 - **Network client**: [dio](https://pub.dev/packages/dio) & [retrofit](https://pub.dev/packages/retrofit) — Type-safe, annotation-based REST client with custom interceptors for request logging, token refresh, and network failure fallback.
+- **Image loading**: [cached_network_image](https://pub.dev/packages/cached_network_image) — Disk-cached network image widget with placeholder and error builder support.
+- **Shimmer**: [shimmer_animation](https://pub.dev/packages/shimmer_animation) — Configurable shimmer skeleton loader used inside `AppImage` as a network load placeholder.
 - **Local Database**: [hive](https://pub.dev/packages/hive) — Lightweight, fast key-value database for locally cached variables.
 - **Routing**: [auto_route](https://pub.dev/packages/auto_route) — Compile-time generated, strongly-typed routing.
 - **Cryptography**: [encrypt](https://pub.dev/packages/encrypt) — AES-CBC parameter encryption for secure payload transfer over the network.
@@ -312,3 +326,11 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 ### `AppListView` — `ScrollCacheExtent` Migration
 - Replaced deprecated `cacheExtent: double?` parameter on all three `ListView` constructors (`normal`, `builder`, `separated`) with `scrollCacheExtent: ScrollCacheExtent.pixels(...)` — `cacheExtent` was deprecated after Flutter `3.41.0-0.0.pre`.
 - The public `cacheExtent: double?` field on `AppListView` is preserved for backward compatibility; the conversion happens internally at the `ListView` call site.
+
+### New Widgets
+- **`AppRefreshIndicator`** (`widgets/app_refresh_indicator.dart`): Thin wrapper around `RefreshIndicator.adaptive` with theme-aware `colorScheme.primary` color. Replaces raw `RefreshIndicator` usage across the codebase (first applied in `home_page.dart`).
+- **`AppImage`** (`widgets/app_image.dart`): Universal image widget supporting remote URLs (disk-cached via `cached_network_image`), local files, and assets. Includes animated shimmer placeholder, theme-aware fallback with initials or icon, and both circular and rectangular layout modes.
+
+### New Dependencies
+- **`cached_network_image: ^3.4.1`** — disk-cached network image loading used by `AppImage`.
+- **`shimmer_animation: ^2.2.1`** — shimmer skeleton animation used as `AppImage`'s network load placeholder.

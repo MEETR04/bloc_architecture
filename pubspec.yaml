@@ -31,11 +31,14 @@ dependencies:
   # Crypto, Encryption, & Utilities
   device_info_plus: 12.1.0
 
+  cached_network_image: ^3.4.1
+
   # Networking & HTTP Client
   dio: ^5.9.0
 
   # UI Design, Custom Controls & Layout
   dropdown_button2: ^2.3.9
+  shimmer_animation: ^2.2.1
 
   # Crypto, Encryption, & Utilities
   encrypt: 

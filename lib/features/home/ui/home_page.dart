@@ -4,6 +4,7 @@ import 'package:bloc_architecture/features/home/bloc/home_bloc.dart';
 import 'package:bloc_architecture/values/app_spacing.dart';
 import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:bloc_architecture/widgets/app_list_view.dart';
+import 'package:bloc_architecture/widgets/app_refresh_indicator.dart';
 import 'package:bloc_architecture/widgets/auto_refresh_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
                 );
               }
               if (state is UserListLoadedState) {
-                return RefreshIndicator(
+                return AppRefreshIndicator(
                   onRefresh: () async {
                     context.read<HomeBloc>().add(FetchUsersEvent());
                   },
