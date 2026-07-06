@@ -21,3 +21,9 @@ abstract final class AppConstants {
   static const List<String> videoExtensions = ['.mp4', '.mkv', '.avi', '.mov', '.webm'];
   static const List<String> docExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt'];
 }
+
+enum SelectionType { single, multiple }
+
+enum PickedFileType { image, video, file }
+
+enum SourceType { camera, gallery }

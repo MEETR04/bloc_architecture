@@ -11,12 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 
-enum SelectionType { single, multiple }
-
-enum PickedFileType { image, video, file }
-
-enum SourceType { camera, gallery }
-
 class AppMediaPickerBottomSheet extends StatelessWidget {
   const AppMediaPickerBottomSheet({
     super.key,
