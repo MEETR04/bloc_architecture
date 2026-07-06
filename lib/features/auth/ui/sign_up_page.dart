@@ -7,6 +7,7 @@ import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:bloc_architecture/widgets/app_button.dart';
 import 'package:bloc_architecture/widgets/app_snackbar.dart';
 import 'package:bloc_architecture/widgets/app_textfield.dart';
+import 'package:bloc_architecture/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,9 +35,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) => BlocProvider<AuthBloc>(
     create: (_) => locator<AuthBloc>(),
     child: Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        automaticallyImplyLeading: false,
+      appBar: const CustomAppBar(
+        title: 'Sign Up',
       ),
       body: Center(
         child: BlocConsumer<AuthBloc, AuthState>(

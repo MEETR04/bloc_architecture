@@ -10,6 +10,7 @@ import 'package:bloc_architecture/widgets/app_button.dart';
 import 'package:bloc_architecture/widgets/app_snackbar.dart';
 import 'package:bloc_architecture/widgets/app_textfield.dart';
 import 'package:bloc_architecture/widgets/auto_refresh_builder.dart';
+import 'package:bloc_architecture/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) => BlocProvider<AuthBloc>(
     create: (_) => locator<AuthBloc>(),
     child: Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
+      appBar: const CustomAppBar(title: 'Sign In'),
       body: AutoRefreshBuilder(
         onRetry: () {
           debugPrint('Retry');

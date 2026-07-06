@@ -119,12 +119,14 @@ lib/
 │
 └── widgets/                             # Shared/Reusable UI components
     ├── app_button.dart
+    ├── app_dropdown_textfield.dart
     ├── app_image.dart
     ├── app_list_view.dart
     ├── app_refresh_indicator.dart
     ├── app_snackbar.dart
     ├── app_textfield.dart
     ├── auto_refresh_builder.dart
+    ├── custom_app_bar.dart
     ├── glass_container.dart
     └── glass_dialog.dart
 ```
@@ -162,6 +164,16 @@ The project includes custom-built, highly-optimized components that implement de
 * **Shimmer placeholder**: Shows an animated shimmer skeleton (`shimmer_animation`) while a network image loads. The placeholder can be overridden via the `placeHolder` parameter.
 * **Theme-aware fallback**: When no source resolves, renders the first letter of `initial` (if provided) or a material icon, both sized proportionally to the container and colored from the active `ColorScheme`.
 * **Flexible sizing**: Supports both circular (`radius`) and rectangular (`height`/`width`) layouts; corner rounding is controlled via `roundedCorner` (defaults to `radius`).
+
+### 7. `AppDropdownTextField`
+* **Adaptive Cupertino Picker**: Shows an overlay sheet containing a scrollable `CupertinoPicker` when tapped, facilitating standard dropdown list selection on mobile.
+* **Memory Leak Protection**: Explicitly disposes and detaches listeners attached to the backing value notifier.
+* **Input Synchronization**: Updates the text field controller automatically when the value notifier triggers.
+
+### 8. `CustomAppBar` & `BaseAppBar`
+* **Stateless & Immutable**: Avoids mutable fields inside widget classes. Fully stateless implementation that handles titles, actions, back navigations, and customized leading widgets cleanly.
+* **Responsive PreferredSize**: Implements `PreferredSizeWidget` with a dynamically computed height when the `bottom` property is set (e.g. for filters, tab bars, etc.).
+* **Rounded Corners**: Integrates a default shape layout with rounded bottom corners (`20.0`) customizable per screen.
 
 ---
 
@@ -330,6 +342,8 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 ### New Widgets
 - **`AppRefreshIndicator`** (`widgets/app_refresh_indicator.dart`): Thin wrapper around `RefreshIndicator.adaptive` with theme-aware `colorScheme.primary` color. Replaces raw `RefreshIndicator` usage across the codebase (first applied in `home_page.dart`).
 - **`AppImage`** (`widgets/app_image.dart`): Universal image widget supporting remote URLs (disk-cached via `cached_network_image`), local files, and assets. Includes animated shimmer placeholder, theme-aware fallback with initials or icon, and both circular and rectangular layout modes.
+- **`AppDropdownTextField`** (`widgets/app_dropdown_textfield.dart`): Fully unified adaptive dropdown with a CupertinoPicker overlay, memory leak protection, and value notifier syncing. Used in `HomePage` for user sorting.
+- **`CustomAppBar` / `BaseAppBar`** (`widgets/custom_app_bar.dart`): Completely stateless and immutable app bar widget with customizable bottom borders, back navigation integration, and dynamic preferredSize support (used in `HomePage`, `LoginPage`, and `SignUpPage`).
 
 ### New Dependencies
 - **`cached_network_image: ^3.4.1`** — disk-cached network image loading used by `AppImage`.
