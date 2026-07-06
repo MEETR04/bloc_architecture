@@ -90,7 +90,9 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 6,
                         itemBuilder: (context, index) => Card(
                           child: ListTile(
-                            leading: const CircleAvatar(child: SizedBox.shrink()),
+                            leading: const CircleAvatar(
+                              child: SizedBox.shrink(),
+                            ),
                             title: Text(
                               'User Full Name',
                               style: AppTextStyle.headingSmall.copyWith(
@@ -121,10 +123,12 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                 ).primaryColor.withValues(alpha: 0.1),
                                 backgroundImage:
-                                    user.avatar != null && user.avatar!.isNotEmpty
+                                    user.avatar != null &&
+                                        user.avatar!.isNotEmpty
                                     ? NetworkImage(user.avatar!)
                                     : null,
-                                child: user.avatar == null || user.avatar!.isEmpty
+                                child:
+                                    user.avatar == null || user.avatar!.isEmpty
                                     ? Text(
                                         user.firstName?.isNotEmpty == true
                                             ? user.firstName![0].toUpperCase()

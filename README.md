@@ -128,7 +128,8 @@ lib/
     ├── auto_refresh_builder.dart
     ├── custom_app_bar.dart
     ├── glass_container.dart
-    └── glass_dialog.dart
+    ├── glass_dialog.dart
+    └── media_picker_sheet.dart
 ```
 
 ---
@@ -170,10 +171,13 @@ The project includes custom-built, highly-optimized components that implement de
 * **Memory Leak Protection**: Explicitly disposes and detaches listeners attached to the backing value notifier.
 * **Input Synchronization**: Updates the text field controller automatically when the value notifier triggers.
 
-### 8. `CustomAppBar` & `BaseAppBar`
-* **Stateless & Immutable**: Avoids mutable fields inside widget classes. Fully stateless implementation that handles titles, actions, back navigations, and customized leading widgets cleanly.
-* **Responsive PreferredSize**: Implements `PreferredSizeWidget` with a dynamically computed height when the `bottom` property is set (e.g. for filters, tab bars, etc.).
 * **Rounded Corners**: Integrates a default shape layout with rounded bottom corners (`20.0`) customizable per screen.
+
+### 9. `MediaPickerSheet`
+* **Adaptive Bottom Sheet Picker**: Displays an elegant modal sheet prompting users to select source (Camera/Gallery) for image/video capture, with optional document picking via `file_picker`.
+* **Automatic Image Compression**: Automatically compresses images larger than 150 KB down using `flutter_image_compress` at quality 10 before passing back to the handler callback.
+* **Unified Permission Management**: Intercepts camera/storage permission requests transparently across platforms using `permission_handler` and redirects permanently denied users to app settings.
+* **Theme integration**: Draws design parameters and styling configurations directly from the active `ThemeData` to automatically blend with Light & Dark UI contexts.
 
 ---
 
@@ -344,7 +348,13 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 - **`AppImage`** (`widgets/app_image.dart`): Universal image widget supporting remote URLs (disk-cached via `cached_network_image`), local files, and assets. Includes animated shimmer placeholder, theme-aware fallback with initials or icon, and both circular and rectangular layout modes.
 - **`AppDropdownTextField`** (`widgets/app_dropdown_textfield.dart`): Fully unified adaptive dropdown with a CupertinoPicker overlay, memory leak protection, and value notifier syncing. Used in `HomePage` for user sorting.
 - **`CustomAppBar` / `BaseAppBar`** (`widgets/custom_app_bar.dart`): Completely stateless and immutable app bar widget with customizable bottom borders, back navigation integration, and dynamic preferredSize support (used in `HomePage`, `LoginPage`, and `SignUpPage`).
+- **`MediaPickerSheet`** (`widgets/media_picker_sheet.dart`): Adaptive modal sheet for capturing and picking camera/gallery media and files, bundled with automatic image compression, unified permissions checking, and Material 3 design support.
 
 ### New Dependencies
 - **`cached_network_image: ^3.4.1`** — disk-cached network image loading used by `AppImage`.
 - **`shimmer_animation: ^2.2.1`** — shimmer skeleton animation used as `AppImage`'s network load placeholder.
+- **`file_picker: ^8.1.4`** — file and document selection wrapper.
+- **`flutter_image_compress: ^2.3.0`** — fast image compressor for network optimization.
+- **`image_picker: ^1.1.2`** — photo/video capture and picker on iOS/Android.
+- **`permission_handler: ^11.3.1`** — permission request and check wrapper.
+- **`path: ^1.9.0`** — file path manipulation utility.
