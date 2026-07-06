@@ -29,7 +29,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Crypto, Encryption, & Utilities
-  device_info_plus: 
+  device_info_plus: 12.1.0
 
   # Networking & HTTP Client
   dio: ^5.9.0

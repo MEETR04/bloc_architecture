@@ -59,6 +59,7 @@ class DioExceptionUtil {
         }
 
       case DioExceptionType.sendTimeout:
+      case DioExceptionType.transformTimeout:
         throw ServerSideException('Request to API server timed out');
       case DioExceptionType.badCertificate:
         throw ServerSideException('Request to API server timed out');
