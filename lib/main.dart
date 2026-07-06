@@ -27,11 +27,11 @@ void main() async {
     // Enable edge-to-edge display mode.
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
 
-    // Restrict screen orientation strictly to portrait mode.
+/*     // Restrict screen orientation strictly to portrait mode.
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-    ]),
+    ]), */
   ]);
 
   // Adjust system status and navigation bar styles for edge-to-edge rendering.

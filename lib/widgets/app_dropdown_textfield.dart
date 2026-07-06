@@ -194,15 +194,15 @@ class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
           color: AppColors.grey400,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12).r,
           borderSide: BorderSide(color: fallbackBorderColor),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12).r,
           borderSide: BorderSide(color: fallbackBorderColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12).r,
           borderSide: BorderSide(color: fallbackBorderColor),
         ),
       ),
