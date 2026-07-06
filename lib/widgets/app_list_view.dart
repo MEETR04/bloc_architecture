@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc_architecture/values/extensions/context.extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum _AppListViewType { normal, builder, separated }
@@ -129,7 +130,7 @@ class AppListView extends StatelessWidget {
           physics: physics,
           shrinkWrap: shrinkWrap,
           padding: finalPadding,
-          cacheExtent: cacheExtent,
+          scrollCacheExtent: cacheExtent != null ? ScrollCacheExtent.pixels(cacheExtent!) : null,
           semanticChildCount: semanticChildCount,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
@@ -149,7 +150,7 @@ class AppListView extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
-          cacheExtent: cacheExtent,
+          scrollCacheExtent: cacheExtent != null ? ScrollCacheExtent.pixels(cacheExtent!) : null,
           semanticChildCount: semanticChildCount,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
@@ -170,7 +171,7 @@ class AppListView extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
-          cacheExtent: cacheExtent,
+          scrollCacheExtent: cacheExtent != null ? ScrollCacheExtent.pixels(cacheExtent!) : null,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
           restorationId: restorationId,
