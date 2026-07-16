@@ -54,7 +54,7 @@ lib/features/<feature>/
 - [ ] Create response model(s) in `models/response/` with `@JsonSerializable()`
 - [ ] Run codegen:
   ```
-  dart run build_runner build --delete-conflicting-outputs
+  dart run build_runner build
   ```
 
 ### 3 — Datasource
@@ -62,7 +62,7 @@ lib/features/<feature>/
 - [ ] Add `part '<feature>_api.g.dart';`
 - [ ] Run codegen again (if not already done in step 2):
   ```
-  dart run build_runner build --delete-conflicting-outputs
+  dart run build_runner build
   ```
 
 ### 4 — Domain Interface
@@ -105,7 +105,7 @@ lib/features/<feature>/
 - [ ] Add `AutoRoute(page: FeatureRoute.page)` to `AppRouter.routes` in `app_routes.dart`
 - [ ] Run codegen to generate `FeatureRoute` in `app_routes.gr.dart`:
   ```
-  dart run build_runner build --delete-conflicting-outputs
+  dart run build_runner build
   ```
 - [ ] Navigate using `AppNavigator.push(const FeatureRoute())`
 
@@ -116,7 +116,7 @@ lib/features/<feature>/
 Run this after **any** of these changes: model, datasource, or route file.
 
 ```
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 ---

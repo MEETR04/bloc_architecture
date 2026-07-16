@@ -253,11 +253,14 @@ flutter pub get
 ### 3. Generate Code (Retrofit & AutoRoute)
 Ensure the code generation watcher is running to compile serialization, network clients, and routes:
 ```bash
-# Run one-off generation
-dart run build_runner build --delete-conflicting-outputs
+# Run one-off generation (recommended)
+make gen
+
+# Wipe generated files and rebuild from scratch
+make clean-gen
 
 # Watch for file modifications
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
 
 ### 4. Generate Localizations (Internationalization)
@@ -280,7 +283,40 @@ dart run flutter_launcher_icons -f flutter_launcher_icons.yaml
 dart run flutter_native_splash:create --path=flutter_native_splash.yaml
 ```
 
-### 6. Static Code Analysis & Tests
+### 6. Building Releases
+
+> [!IMPORTANT]
+> All build commands below automatically print the **current version and build number** from `pubspec.yaml` before starting, and remind you to bump them. Always increment `version` in `pubspec.yaml` before shipping.
+
+Each build command runs a full clean pipeline: `flutter clean` → `flutter pub get` → `make clean-gen` → build.
+
+#### Android — APK (direct install / testing)
+```bash
+make build-apk
+```
+Output: `build/app/outputs/flutter-apk/app-release.apk`
+
+#### Android — App Bundle (Play Store upload)
+```bash
+make build-aab
+```
+Output: `build/app/outputs/bundle/release/app-release.aab`
+
+#### iOS — IPA (App Store / TestFlight)
+```bash
+make build-ipa
+```
+Output: `build/ios/ipa/*.ipa`
+> No `pod install` step required — this project uses Swift Package Manager (SPM).
+
+### 7. Run in Debug Mode
+```bash
+make run
+# or
+flutter run
+```
+
+### 8. Static Code Analysis & Tests
 To verify formatting, run static analysis checks, and run the test suite:
 ```bash
 # Format code
@@ -293,7 +329,7 @@ flutter analyze
 flutter test
 ```
 
-### 7. Rename Application Package Name
+### 9. Rename Application Package Name
 To rename the Android package name and iOS bundle identifier across all platforms:
 ```bash
 dart run change_app_package_name:main <new_package_name>
@@ -303,7 +339,7 @@ dart run change_app_package_name:main <new_package_name>
 dart run change_app_package_name:main com.example.newappname
 ```
 
-### 8. Changing the Application Name
+### 10. Changing the Application Name
 To fully rename the application, update the name parameter in the following locations:
 1. **Platform Manifests (App Display Name)**:
    - **Android**: Update `android:label` under the `<application>` node in `android/app/src/main/AndroidManifest.xml`.
@@ -311,13 +347,14 @@ To fully rename the application, update the name parameter in the following loca
 2. **MaterialApp Title**:
    - Update the `title` or `onGenerateTitle` callback parameter of the `MaterialApp` widget inside [main.dart](file:///Users/hyperlink/StudioProjects/bloc_architecture/lib/main.dart).
 3. **Project Name**:
-   - Update the `name:` field at the very top of [pubspec.yaml](file:///Users/hyperlink/StudioProjects/bloc_architecture/pubspec.yaml). Run `flutter pub get` and regenerate files using `build_runner`.
+   - Update the `name:` field at the very top of [pubspec.yaml](file:///Users/hyperlink/StudioProjects/bloc_architecture/pubspec.yaml). Run `flutter pub get` and regenerate files using `make gen`.
+
 
 ---
 
 ## 🚀 CI/CD Pipeline
 The project includes a pre-configured GitHub Actions workflow located at [.github/workflows/dart.yml](file:///Users/hyperlink/StudioProjects/bloc_architecture/.github/workflows/dart.yml) that:
-1. Installs the exact Flutter version (`3.44.3`).
+1. Installs the exact Flutter version (`3.44.6`).
 2. Leverages caching for the SDK and pub dependencies (`cache: true`) to optimize execution times.
 3. Automatically runs lint checks (`flutter analyze`) and execution tests (`flutter test`) on pushes and pull requests to the `main` branch.
 4. Uses `actions/checkout@v5` (Node.js 24 runtime) — `@v4` is deprecated on current GitHub Actions runners.
@@ -326,9 +363,9 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 
 ## 📋 Changelog
 
-### Flutter 3.44.3 Migration
-- **Flutter SDK**: Upgraded from `3.38.9` → `3.44.3` (stable).
-- **CI**: Bumped `actions/checkout` `v4` → `v5` (Node.js 24 runtime, resolves runner deprecation warning).
+### Flutter 3.44.6 Migration
+- **Flutter SDK**: Upgraded from `3.44.3` → `3.44.6` (stable). Dart `3.12.2`, DevTools `2.57.0`.
+- **CI**: Bumped Flutter version pin to `3.44.6` in `dart.yml`.
 
 ### iOS: CocoaPods → Swift Package Manager
 - Ran `pod deintegrate` to strip all CocoaPods build phases and xcconfig references from `Runner.xcodeproj`.

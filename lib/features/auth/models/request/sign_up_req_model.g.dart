@@ -13,7 +13,4 @@ SignUpReqModel _$SignUpReqModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$SignUpReqModelToJson(SignUpReqModel instance) =>
-    <String, dynamic>{
-      'email': instance.email,
-      'password': instance.password,
-    };
+    <String, dynamic>{'email': instance.email, 'password': instance.password};

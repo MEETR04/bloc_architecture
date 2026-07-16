@@ -97,7 +97,7 @@ dependencies:
 
   # Networking & HTTP Client
   pretty_dio_logger: ^1.4.0
-  retrofit: ^4.0.1
+  retrofit: ^4.4.2
   shimmer_animation: ^2.2.1
 
   # Crypto, Encryption, & Utilities
@@ -125,8 +125,8 @@ dev_dependencies:
     sdk: flutter
 
   # Code Generation Tools
-  hive_generator: ^2.0.1
-  retrofit_generator: ^8.2.1
+  retrofit_generator: ^10.2.7
+
 
 flutter:
   uses-material-design: true

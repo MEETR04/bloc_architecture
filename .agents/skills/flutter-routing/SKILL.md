@@ -51,7 +51,7 @@ List<AutoRoute> get routes => [
 **Step 3 — Run codegen**
 
 ```
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 This regenerates `app_routes.gr.dart`. The new `ProfileRoute` class will be available after this step.

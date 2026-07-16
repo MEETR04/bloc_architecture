@@ -49,7 +49,7 @@ abstract class UserApi {
 
 - After modifying a `_api.dart`, always run:
   ```
-  dart run build_runner build --delete-conflicting-outputs
+  dart run build_runner build
   ```
 
 ---
@@ -152,7 +152,7 @@ class LoginRequestModel {
 
 After modifying a model, regenerate:
 ```
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 ---
