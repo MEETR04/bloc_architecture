@@ -1,0 +1,15 @@
+# build_runner configuration.
+# Scopes code generation to lib/ only, skipping transitive package sources
+# and reducing unnecessary rebuild checks on large dependency trees.
+
+targets:
+  $default:
+    sources:
+      include:
+        - lib/**
+        - test/**
+      exclude:
+        - lib/generated/**
+        - '**/*.g.dart'
+        - '**/*.gr.dart'
+        - '**/*.freezed.dart'

@@ -1,4 +1,4 @@
-.PHONY: gen clean-gen run build-apk build-aab build-ipa _version_check
+.PHONY: gen clean-gen run analyze format build-apk build-aab build-ipa _version_check
 
 # Regenerate all build_runner outputs (models, routes, retrofit)
 gen:
@@ -11,6 +11,14 @@ clean-gen:
 # Run the app in debug mode
 run:
 	flutter run
+
+# Run static analysis
+analyze:
+	flutter analyze
+
+# Format all Dart source files
+format:
+	dart format lib/ test/
 
 # Internal: reads version from pubspec.yaml and prints a reminder
 _version_check:
