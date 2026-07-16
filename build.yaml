@@ -8,6 +8,8 @@ targets:
       include:
         - lib/**
         - test/**
+        - pubspec.yaml
+        - $package$
       exclude:
         - lib/generated/**
         - '**/*.g.dart'
