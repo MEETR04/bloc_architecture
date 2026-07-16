@@ -1,3 +1,8 @@
+---
+name: flutter-api
+description: Use when creating or modifying API calls, Retrofit datasources, repositories, use cases, request/response models, exceptions, or GetIt dependency injection in this Flutter project
+---
+
 # Flutter API & Data Layer Guidelines
 
 Apply these rules every time you add or modify API calls, repositories, use cases, models, or DI registration in this project.

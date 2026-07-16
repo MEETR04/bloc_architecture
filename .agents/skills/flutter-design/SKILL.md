@@ -1,3 +1,8 @@
+---
+name: flutter-design
+description: Use when creating or modifying any Flutter UI, widgets, screens, layouts, styling, spacing, padding, colors, typography, or theme in this project
+---
+
 # Flutter UI Design Guidelines
 
 Apply these rules every time you write or modify Flutter UI code in this project.

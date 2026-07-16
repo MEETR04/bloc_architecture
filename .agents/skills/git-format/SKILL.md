@@ -1,3 +1,8 @@
+---
+name: git-format
+description: Use when generating, writing, or formatting a git commit message for staged changes in this project
+---
+
 Generate a git commit message from my staged changes.
 
 Rules:

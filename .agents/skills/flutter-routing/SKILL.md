@@ -1,3 +1,8 @@
+---
+name: flutter-routing
+description: Use when adding new screens, navigating between pages, modifying AppRouter, or working with auto_route in this Flutter project
+---
+
 # Flutter Routing Guidelines
 
 Apply these rules every time you add screens, navigate between pages, or modify the route configuration in this project.

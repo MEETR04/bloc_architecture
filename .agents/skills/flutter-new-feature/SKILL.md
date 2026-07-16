@@ -1,3 +1,8 @@
+---
+name: flutter-new-feature
+description: Use when scaffolding, building, or adding a complete new feature from scratch in this Flutter project, covering all layers from API to UI
+---
+
 # New Feature Scaffolding Guide
 
 Use this checklist every time you add a brand-new feature to this project.

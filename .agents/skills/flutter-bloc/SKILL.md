@@ -1,3 +1,8 @@
+---
+name: flutter-bloc
+description: Use when creating or modifying a BLoC, Cubit, events, states, or consuming BLoC in Flutter UI with BlocBuilder, BlocListener, or BlocConsumer
+---
+
 # Flutter BLoC Guidelines
 
 Apply these rules every time you create or modify a BLoC, Cubit, event, or state in this project.
