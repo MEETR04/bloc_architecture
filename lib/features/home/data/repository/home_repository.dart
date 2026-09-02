@@ -1,4 +1,5 @@
 import 'package:bloc_architecture/core/api/exceptions/app_exception.dart';
+import 'package:bloc_architecture/core/api/exceptions/dio_exception_utils.dart';
 import 'package:bloc_architecture/features/home/data/datasource/home_api.dart';
 import 'package:bloc_architecture/features/home/domain/repository/i_home_repository.dart';
 import 'package:bloc_architecture/features/home/models/response/reqres_user_model.dart';
@@ -14,10 +15,7 @@ class HomeRepository implements IHomeRepository {
       final response = await _homeApi.getUsers(page: page);
       return response.data ?? [];
     } on DioException catch (e) {
-      final msg = e.response?.data is Map
-          ? e.response?.data['error']?.toString()
-          : null;
-      throw AppException(msg ?? e.message ?? e.error.toString());
+      throw DioExceptionUtil.parseError(e);
     } catch (e) {
       throw AppException(e.toString());
     }

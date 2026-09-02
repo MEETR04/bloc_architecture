@@ -1,4 +1,5 @@
 import 'package:bloc_architecture/core/api/exceptions/app_exception.dart';
+import 'package:bloc_architecture/core/api/exceptions/dio_exception_utils.dart';
 import 'package:bloc_architecture/features/auth/data/datasource/auth_api.dart';
 import 'package:bloc_architecture/features/auth/domain/repository/i_auth_repository.dart';
 import 'package:bloc_architecture/features/auth/models/request/login_request_model.dart';
@@ -16,10 +17,7 @@ class AuthRepository implements IAuthRepository {
     try {
       return await _authApi.login(request);
     } on DioException catch (e) {
-      final msg = e.response?.data is Map
-          ? e.response?.data['error']?.toString()
-          : null;
-      throw AppException(msg ?? e.message ?? e.error.toString());
+      throw DioExceptionUtil.parseError(e);
     } catch (e) {
       throw AppException(e.toString());
     }
@@ -30,10 +28,7 @@ class AuthRepository implements IAuthRepository {
     try {
       return await _authApi.register(request);
     } on DioException catch (e) {
-      final msg = e.response?.data is Map
-          ? e.response?.data['error']?.toString()
-          : null;
-      throw AppException(msg ?? e.message ?? e.error.toString());
+      throw DioExceptionUtil.parseError(e);
     } catch (e) {
       throw AppException(e.toString());
     }

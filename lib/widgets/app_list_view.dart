@@ -130,7 +130,9 @@ class AppListView extends StatelessWidget {
           physics: physics,
           shrinkWrap: shrinkWrap,
           padding: finalPadding,
-          scrollCacheExtent: cacheExtent != null ? ScrollCacheExtent.pixels(cacheExtent!) : null,
+          scrollCacheExtent: cacheExtent != null
+              ? ScrollCacheExtent.pixels(cacheExtent!)
+              : null,
           semanticChildCount: semanticChildCount,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
@@ -150,7 +152,9 @@ class AppListView extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
-          scrollCacheExtent: cacheExtent != null ? ScrollCacheExtent.pixels(cacheExtent!) : null,
+          scrollCacheExtent: cacheExtent != null
+              ? ScrollCacheExtent.pixels(cacheExtent!)
+              : null,
           semanticChildCount: semanticChildCount,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
@@ -171,7 +175,9 @@ class AppListView extends StatelessWidget {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
-          scrollCacheExtent: cacheExtent != null ? ScrollCacheExtent.pixels(cacheExtent!) : null,
+          scrollCacheExtent: cacheExtent != null
+              ? ScrollCacheExtent.pixels(cacheExtent!)
+              : null,
           dragStartBehavior: dragStartBehavior,
           keyboardDismissBehavior: keyboardDismissBehavior,
           restorationId: restorationId,

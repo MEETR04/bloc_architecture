@@ -83,8 +83,8 @@ class AppImage extends StatelessWidget {
         height: h,
         width: w,
         fit: boxFit ?? BoxFit.cover,
-        placeholder: (_, __) => _buildShimmerPlaceholder(h, w),
-        errorWidget: (_, __, ___) => _buildFallback(context, h, w),
+        placeholder: (_, _) => _buildShimmerPlaceholder(h, w),
+        errorWidget: (_, _, _) => _buildFallback(context, h, w),
       );
     }
 
@@ -121,9 +121,7 @@ class AppImage extends StatelessWidget {
         child: Container(
           height: h,
           width: w,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade400,
-          ),
+          decoration: BoxDecoration(color: Colors.grey.shade400),
         ),
       );
 
@@ -145,7 +143,8 @@ class AppImage extends StatelessWidget {
       child: initial != null && initial!.isNotEmpty
           ? Text(
               initial![0].toUpperCase(),
-              style: textStyle ??
+              style:
+                  textStyle ??
                   TextStyle(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.bold,

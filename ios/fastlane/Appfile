@@ -1,0 +1,7 @@
+# iOS Fastlane Appfile
+# Configures the iOS app identifier and Apple developer account details
+
+app_identifier(ENV["IOS_APP_IDENTIFIER"] || "com.example.blocArchitecture")
+apple_id(ENV["APPLE_ID"]) # Your Apple ID email (optional when using API Key)
+team_id(ENV["APPLE_TEAM_ID"]) # Apple Developer Portal Team ID
+itc_team_id(ENV["ITC_TEAM_ID"]) # App Store Connect Team ID (optional)

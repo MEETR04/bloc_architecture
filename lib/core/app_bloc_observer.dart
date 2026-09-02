@@ -1,56 +1,40 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart'; // for kDebugMode
+import 'package:bloc_architecture/core/utils/app_logger.dart';
 
+/// Global BLoC observer providing structured transitions, events, and error diagnostics.
 class AppBlocObserver extends BlocObserver {
-  void _log(String message) {
-    if (kDebugMode) debugPrint(message);
-  }
-
   @override
   void onCreate(BlocBase<dynamic> bloc) {
-    _log('🟢 [CREATE] ${bloc.runtimeType}');
+    AppLogger.d('🟢 [CREATE] ${bloc.runtimeType}', tag: 'BLoC');
     super.onCreate(bloc);
   }
-
-  /*
-    @override
-    void onChange(BlocBase bloc, Change change) {
-    _log("""
-🔄 [CHANGE] ${bloc.runtimeType}
-  → current: ${change.currentState}
-  → next: ${change.nextState}
-""");
-    super.onChange(bloc, change);
-  }
-  */
 
   @override
   void onTransition(
     Bloc<dynamic, dynamic> bloc,
     Transition<dynamic, dynamic> transition,
   ) {
-    _log('''
-⚡ [TRANSITION] ${bloc.runtimeType}
-  → event: ${transition.event}
-  → current: ${transition.currentState}
-  → next: ${transition.nextState}
-''');
+    AppLogger.d(
+      '⚡ [TRANSITION] ${bloc.runtimeType} | event: ${transition.event.runtimeType} -> ${transition.nextState.runtimeType}',
+      tag: 'BLoC',
+    );
     super.onTransition(bloc, transition);
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    _log('''
-❌ [ERROR] ${bloc.runtimeType}
-  → error: $error
-  → stacktrace: $stackTrace
-''');
+    AppLogger.e(
+      '❌ [ERROR] in ${bloc.runtimeType}',
+      tag: 'BLoC',
+      error: error,
+      stackTrace: stackTrace,
+    );
     super.onError(bloc, error, stackTrace);
   }
 
   @override
   void onClose(BlocBase<dynamic> bloc) {
-    _log('🔴 [CLOSE] ${bloc.runtimeType}');
+    AppLogger.d('🔴 [CLOSE] ${bloc.runtimeType}', tag: 'BLoC');
     super.onClose(bloc);
   }
 }

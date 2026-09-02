@@ -22,16 +22,16 @@ class LocationService {
     if (!context.mounted) {
       throw Exception('Context is no longer mounted');
     }
-    final bool permissionGranted = await AppPermissionHandler.requestLocation(context);
+    final bool permissionGranted = await AppPermissionHandler.requestLocation(
+      context,
+    );
     if (!permissionGranted) {
       throw Exception('Location permissions are denied');
     }
 
     // Retrieve high-accuracy location
     return await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-      ),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
   }
 
@@ -42,23 +42,32 @@ class LocationService {
     Position? position,
   }) async {
     try {
-      final targetPosition = position ?? await getCurrentLocationLtgLng(context);
-      final List<Placemark> placemarks = await placemarkFromCoordinates(
-        targetPosition.latitude,
-        targetPosition.longitude,
-      );
+      final targetPosition =
+          position ?? await getCurrentLocationLtgLng(context);
+      final List<Placemark> placemarks = await Geocoding()
+          .placemarkFromCoordinates(
+            targetPosition.latitude,
+            targetPosition.longitude,
+          );
 
       if (placemarks.isNotEmpty) {
         final placemark = placemarks.first;
-        final addressParts = [
-          if (placemark.name != null && placemark.name != placemark.street) placemark.name,
-          placemark.street,
-          placemark.subLocality,
-          placemark.locality,
-          placemark.administrativeArea,
-          placemark.postalCode,
-          placemark.country,
-        ].where((part) => part != null && part.toString().trim().isNotEmpty).toList();
+        final addressParts =
+            [
+                  if (placemark.name != null &&
+                      placemark.name != placemark.street)
+                    placemark.name,
+                  placemark.street,
+                  placemark.subLocality,
+                  placemark.locality,
+                  placemark.administrativeArea,
+                  placemark.postalCode,
+                  placemark.country,
+                ]
+                .where(
+                  (part) => part != null && part.toString().trim().isNotEmpty,
+                )
+                .toList();
 
         return addressParts.join(', ');
       }

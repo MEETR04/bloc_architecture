@@ -1,9 +1,12 @@
 import 'package:bloc_architecture/core/app_bloc_observer.dart';
+import 'package:bloc_architecture/core/config/app_config.dart';
 import 'package:bloc_architecture/core/db/app_db.dart';
 import 'package:bloc_architecture/core/locator/locator.dart';
+import 'package:bloc_architecture/core/utils/crash_reporter.dart';
 import 'package:bloc_architecture/generated/l10n.dart';
 import 'package:bloc_architecture/routes/app_routes.dart';
 import 'package:bloc_architecture/values/app_theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,13 +29,10 @@ void main() async {
 
     // Enable edge-to-edge display mode.
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
-
-/*     // Restrict screen orientation strictly to portrait mode.
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]), */
   ]);
+
+  // Initialize typed application configuration with loaded env vars.
+  AppConfig.init();
 
   // Adjust system status and navigation bar styles for edge-to-edge rendering.
   SystemChrome.setSystemUIOverlayStyle(
@@ -47,6 +47,20 @@ void main() async {
 
   // Initialize the GetIt service locator and register all app dependencies.
   await setupLocator();
+
+  // Global uncaught error routing to registered crash reporter
+  FlutterError.onError = (FlutterErrorDetails details) {
+    locator<ICrashReporter>().recordFlutterError(details);
+  };
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    locator<ICrashReporter>().recordError(
+      error,
+      stack,
+      reason: 'Uncaught platform dispatcher error',
+      fatal: true,
+    );
+    return true;
+  };
 
   // Wait until the local database (AppDB/Hive) is fully ready before running the UI.
   await locator.isReady<AppDB>();

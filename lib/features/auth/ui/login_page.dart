@@ -88,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     AppSpacing.vs20,
                     InkWell(
-                      onTap: isLoading ? null : () => appRouter.push(const SignUpRoute()),
+                      onTap: isLoading
+                          ? null
+                          : () => appRouter.push(const SignUpRoute()),
                       child: Text(
                         "Don't have an account? Sign Up",
                         style: AppTextStyle.bodyMedium.copyWith(

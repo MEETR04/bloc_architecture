@@ -100,7 +100,25 @@ migrate_working_dir/
 .env
 .env.*
 *.env
+.env.fastlane
 local.properties
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*service-account*.json
+*service_account*.json
+*play-console*.json
+
+# -----------------------------
+# Fastlane
+# -----------------------------
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/
+**/fastlane/test_output/
+**/fastlane/README.md
+vendor/bundle/
 
 # -----------------------------
 # Local Storage / Database caches (Hive & SQLite)

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc_architecture/core/api/api_module.dart';
 import 'package:bloc_architecture/core/db/app_db.dart';
+import 'package:bloc_architecture/core/utils/crash_reporter.dart';
 import 'package:bloc_architecture/features/auth/bloc/auth_bloc.dart';
 import 'package:bloc_architecture/features/auth/data/datasource/auth_api.dart';
 import 'package:bloc_architecture/features/auth/data/repository/auth_repository.dart';
@@ -28,8 +29,10 @@ Future<void> setupLocator() async {
 
   Hive.init(appDocumentDir.path);
 
-  // 1. Persistence
-  locator.registerSingletonAsync<AppDB>(AppDB.getInstance);
+  // 0. Crash reporting & analytics abstraction & Persistence
+  locator
+    ..registerSingleton<ICrashReporter>(DefaultCrashReporter())
+    ..registerSingletonAsync<AppDB>(AppDB.getInstance);
   await locator.isReady<AppDB>();
 
   // 2. Router

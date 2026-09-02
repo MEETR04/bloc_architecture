@@ -54,7 +54,9 @@ class AppMediaPickerBottomSheet extends StatelessWidget {
               // Camera button
               GestureDetector(
                 onTap: () async {
-                  final parentContext = await _dismissSheetAndGetParentContext(context);
+                  final parentContext = await _dismissSheetAndGetParentContext(
+                    context,
+                  );
                   if (!parentContext.mounted) return;
                   await selectMedia(
                     need16x9CropRatioLocked: need16x9AspectRatioLocked,
@@ -77,7 +79,9 @@ class AppMediaPickerBottomSheet extends StatelessWidget {
               // Gallery button
               GestureDetector(
                 onTap: () async {
-                  final parentContext = await _dismissSheetAndGetParentContext(context);
+                  final parentContext = await _dismissSheetAndGetParentContext(
+                    context,
+                  );
                   if (!parentContext.mounted) return;
                   await selectMedia(
                     need16x9CropRatioLocked: need16x9AspectRatioLocked,
@@ -103,18 +107,18 @@ class AppMediaPickerBottomSheet extends StatelessWidget {
                   onTap: () async {
                     Navigator.pop(context);
                     try {
-                      final FilePickerResult? result =
-                          await FilePicker.platform.pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: [
-                          'pdf',
-                          'doc',
-                          'docx',
-                          'xls',
-                          'xlsx',
-                          'txt',
-                        ],
-                      );
+                      final FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: [
+                              'pdf',
+                              'doc',
+                              'docx',
+                              'xls',
+                              'xlsx',
+                              'txt',
+                            ],
+                          );
                       if (result != null && result.files.single.path != null) {
                         onSelectFile([
                           XFile(result.files.single.path!),
@@ -137,7 +141,8 @@ class AppMediaPickerBottomSheet extends StatelessWidget {
                 12.verticalSpace,
                 GestureDetector(
                   onTap: () async {
-                    final parentContext = await _dismissSheetAndGetParentContext(context);
+                    final parentContext =
+                        await _dismissSheetAndGetParentContext(context);
                     if (!parentContext.mounted) return;
                     await selectMedia(
                       context: parentContext,
@@ -337,11 +342,11 @@ class AppMediaPickerBottomSheet extends StatelessWidget {
 
     final XFile? compressedImage =
         await FlutterImageCompress.compressAndGetFile(
-      file.path,
-      targetPath,
-      quality: 10,
-      format: CompressFormat.jpeg,
-    );
+          file.path,
+          targetPath,
+          quality: 10,
+          format: CompressFormat.jpeg,
+        );
 
     if (compressedImage == null) {
       throw Exception('Failed to compress image: ${file.path}');
@@ -362,8 +367,8 @@ class AppMediaPickerBottomSheet extends StatelessWidget {
         if (pickFileType == PickedFileType.video) Permission.microphone,
       ];
 
-      final Map<Permission, PermissionStatus> statuses =
-          await permissions.request();
+      final Map<Permission, PermissionStatus> statuses = await permissions
+          .request();
 
       final bool allGranted = statuses.values.every(
         (s) => s.isGranted || s.isLimited,
@@ -445,35 +450,38 @@ class _RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 14.h),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.all(Radius.circular(100.r)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              offset: const Offset(0, 2),
-              blurRadius: 4.r,
-            ),
-          ],
+    width: double.infinity,
+    padding: EdgeInsets.symmetric(vertical: 14.h),
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      color: bgColor,
+      borderRadius: BorderRadius.all(Radius.circular(100.r)),
+      boxShadow: <BoxShadow>[
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.05),
+          offset: const Offset(0, 2),
+          blurRadius: 4.r,
         ),
-        child: Text(
-          buttonLabel,
-          style: AppTextStyle.labelLarge.copyWith(
-            color: textColor,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      );
+      ],
+    ),
+    child: Text(
+      buttonLabel,
+      style: AppTextStyle.labelLarge.copyWith(
+        color: textColor,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
 }
 
-bool isImageFile(String filePath) =>
-    AppConstants.imageExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
+bool isImageFile(String filePath) => AppConstants.imageExtensions.any(
+  (ext) => filePath.toLowerCase().endsWith(ext),
+);
 
-bool isVideoFile(String filePath) =>
-    AppConstants.videoExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
+bool isVideoFile(String filePath) => AppConstants.videoExtensions.any(
+  (ext) => filePath.toLowerCase().endsWith(ext),
+);
 
-bool isDocFile(String filePath) =>
-    AppConstants.docExtensions.any((ext) => filePath.toLowerCase().endsWith(ext));
+bool isDocFile(String filePath) => AppConstants.docExtensions.any(
+  (ext) => filePath.toLowerCase().endsWith(ext),
+);

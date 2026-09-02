@@ -3,8 +3,8 @@
 ## Project Identity
 
 - **Package name**: `bloc_architecture`
-- **Flutter**: `3.44.6` (stable channel)
-- **Dart**: `3.12.2`
+- **Flutter**: `3.47.2` (stable channel)
+- **Dart**: `3.13.2`
 - **Design size** (ScreenUtil): `375 × 812`
 
 ---

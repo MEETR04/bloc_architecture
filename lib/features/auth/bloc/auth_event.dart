@@ -11,10 +11,7 @@ class LoginButtonPressedEvent extends AuthEvent {
 
 // reqres.in register only needs email + password
 class SignUpButtonPressedEvent extends AuthEvent {
-  SignUpButtonPressedEvent({
-    required this.email,
-    required this.password,
-  });
+  SignUpButtonPressedEvent({required this.email, required this.password});
   final String email;
   final String password;
 }

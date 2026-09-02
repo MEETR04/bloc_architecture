@@ -31,21 +31,27 @@ lib/
 │   ├── api/                             # Network layer configuration
 │   │   ├── base_response/               # Standardized wrappers for API envelopes
 │   │   │   └── base_response.dart
-│   │   ├── exceptions/                  # Global network and status-code exceptions
-│   │   │   └── app_exception.dart
-│   │   ├── interceptors/                # Dio interceptors (Logging, Error handling, Security)
+│   │   ├── exceptions/                  # Global network, status-code, and business exceptions
+│   │   │   ├── app_exception.dart
+│   │   │   └── dio_exception_utils.dart # Bulletproof DioException parser
+│   │   ├── interceptors/                # Dio interceptors (Logging, Security, Retries)
 │   │   │   ├── custom_interceptors.dart
 │   │   │   ├── http_logger_interceptor.dart
-│   │   │   └── internet_interceptor.dart
+│   │   │   ├── internet_interceptor.dart
+│   │   │   └── retry_interceptor.dart   # Exponential backoff network retry
 │   │   ├── api_endpoints.dart           # Static API endpoint URIs
 │   │   └── api_module.dart              # Dio configuration and singleton providers
+│   ├── config/                          # Typed runtime application configuration
+│   │   └── app_config.dart              # AppEnvironment manager & .env loader
 │   ├── db/                              # Local database setups and Hive configurations
 │   │   └── app_db.dart                  # High-level local storage key-value wrapper
 │   ├── locator/                         # Service locator for dependency injection
 │   │   └── locator.dart                 # Registry setups for singletons and dependencies
 │   ├── utils/                           # Core utilities
+│   │   ├── app_logger.dart              # Structured level-based logger
+│   │   ├── crash_reporter.dart          # ICrashReporter interface & default handler
 │   │   └── app_result.dart              # Functional Success/Failure wrappers
-│   └── app_bloc_observer.dart           # Global BLoC state transitions logger
+│   └── app_bloc_observer.dart           # Global BLoC state transitions & error logger
 │
 ├── features/                            # Feature modules following Clean Architecture
 │   ├── auth/                            # Authentication module
@@ -352,9 +358,140 @@ To fully rename the application, update the name parameter in the following loca
 
 ---
 
+---
+
+## 🚀 Fastlane & Continuous Deployment
+
+This repository includes a production-ready **Fastlane** setup for both **Android (Google Play Console)** and **iOS (App Store Connect / TestFlight)**, paired with an automated version bumping tool in `scripts/bump_version.dart`.
+
+### 1. Prerequisites
+Ensure Ruby and Fastlane are installed:
+```bash
+# Verify Fastlane installation
+fastlane --version
+
+# Or install via Bundler / RubyGems
+bundle install
+# Or via Homebrew
+brew install fastlane
+```
+
+---
+
+### 2. Android Configuration (Google Play & GCP Service Account)
+
+To deploy to Google Play (Internal, Alpha, Beta, or Production tracks), Fastlane uses a **Google Cloud Platform (GCP) Service Account key** (`.json` or `.p8`).
+
+#### Step-by-Step Setup:
+1. **Create GCP Service Account**:
+   - Open [Google Cloud Console](https://console.cloud.google.com/).
+   - Select your project -> **IAM & Admin** -> **Service Accounts** -> **Create Service Account**.
+   - Name the service account (e.g. `play-store-deployer`) and assign the role **Service Account User**.
+2. **Generate & Download Key**:
+   - Click on the created service account -> **Keys** tab -> **Add Key** -> **Create new key** (select **JSON** or **P8**).
+   - Save the downloaded file to `android/fastlane/service-account.json` (this path is already in `.gitignore`).
+3. **Grant Access in Google Play Console**:
+   - Open [Google Play Console](https://play.google.com/console/) -> **API access**.
+   - Link your Google Cloud project if not already linked.
+   - Under **Users and permissions**, find your Service Account email, click **Invite user**, and grant **Admin** or **Release Manager** permissions for your app.
+   *(Note: The initial APK or AAB must be uploaded manually once through the Google Play Console UI before automated API uploads can succeed).*
+4. **Configure Environment Variables**:
+   - Copy `.env.fastlane.example` to `.env.fastlane` (or `android/fastlane/.env.example` to `android/fastlane/.env`):
+     ```bash
+     GCP_SERVICE_ACCOUNT_KEY_PATH="./android/fastlane/service-account.json"
+     ANDROID_PACKAGE_NAME="com.example.bloc_architecture"
+     PLAY_STORE_TRACK="internal"
+     ```
+
+---
+
+### 3. iOS Configuration (App Store Connect API Key - `.p8`)
+
+To deploy to **Apple TestFlight** and the **App Store**, Fastlane uses the modern **App Store Connect API Key (`.p8`)** for token-based authentication without requiring 2FA SMS codes or Apple ID passwords.
+
+#### Step-by-Step Setup:
+1. **Generate API Key in App Store Connect**:
+   - Open [App Store Connect](https://appstoreconnect.apple.com/) -> **Users and Access** -> **Integrations** -> **App Store Connect API**.
+   - Click **+** (Generate API Key).
+   - Enter a Name (e.g. `Fastlane Deploy Key`) and assign the **App Manager** or **Admin** role.
+2. **Download Key & Note Identifiers**:
+   - Note the **Key ID** (10-character alphanumeric code, e.g. `2X9R4HXF34`).
+   - Note the **Issuer ID** (UUID format at the top of the page, e.g. `69a6de70-xxxx-xxxx-xxxx-xxxxxxxxxxxx`).
+   - Download the `.p8` file (e.g. `AuthKey_2X9R4HXF34.p8`) and place it at `ios/fastlane/AuthKey.p8` (ignored by `.gitignore`).
+3. **Configure Environment Variables**:
+   - In `.env.fastlane` or `ios/fastlane/.env`:
+     ```bash
+     APP_STORE_CONNECT_KEY_ID="2X9R4HXF34"
+     APP_STORE_CONNECT_ISSUER_ID="69a6de70-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+     APP_STORE_CONNECT_KEY_PATH="./ios/fastlane/AuthKey.p8"
+     IOS_APP_IDENTIFIER="com.example.blocArchitecture"
+     APPLE_TEAM_ID="XXXXXXXXXX"
+     ```
+
+---
+
+### 4. Automated Version Management (`pubspec.yaml`)
+
+The version management script at `scripts/bump_version.dart` inspects and updates `version: X.Y.Z+N` directly inside [pubspec.yaml](file:///Users/hyperlink/StudioProjects/bloc_architecture/pubspec.yaml) across platforms:
+
+| Command | Action | Example (`1.0.0+1`) |
+|---|---|---|
+| `make version` | Check current version and build number | `1.0.0 (build: 1)` |
+| `make bump-build` | Increment build number only | `1.0.0+2` |
+| `make bump-patch` | Increment patch version + build number | `1.0.1+2` |
+| `make bump-minor` | Increment minor version + build number | `1.1.0+2` |
+| `make bump-major` | Increment major version + build number | `2.0.0+2` |
+| `make set-version v=2.0.0+10` | Set explicit version | `2.0.0+10` |
+
+---
+
+### 5. Makefile Command Reference
+
+#### Versioning:
+```bash
+make version                    # Display current version & build number
+make bump-build                 # Auto-increment build code (+1)
+make bump-patch                 # Auto-increment patch version & build code
+make bump-minor                 # Auto-increment minor version & build code
+make bump-major                 # Auto-increment major version & build code
+make set-version v=1.5.0+20     # Set custom version
+```
+
+#### Android Deployment:
+```bash
+make fastlane-android-internal  # Deploy AAB to Google Play Internal track
+make fastlane-android-alpha     # Deploy AAB to Google Play Closed Testing (Alpha)
+make fastlane-android-beta      # Deploy AAB to Google Play Open Testing (Beta)
+make fastlane-android-production# Deploy AAB to Google Play Production
+make fastlane-android-promote   # Promote Internal release to Production
+
+# Auto-bump build number & deploy:
+make deploy-android-internal    # bump-build + internal deploy
+make deploy-android-beta        # bump-build + beta deploy
+make deploy-android-production  # bump-patch + production deploy
+```
+
+#### iOS Deployment:
+```bash
+make fastlane-ios-beta          # Build & upload to Apple TestFlight
+make fastlane-ios-release       # Build & upload to Apple App Store
+
+# Auto-bump & deploy:
+make deploy-ios-beta            # bump-build + TestFlight deploy
+make deploy-ios-release         # bump-patch + App Store deploy
+```
+
+#### Unified Multi-Platform Deployment:
+```bash
+make deploy-beta                # Bump build number -> deploy Android Internal + iOS TestFlight
+make deploy-release             # Bump patch version -> deploy Android Production + iOS App Store
+```
+
+---
+
 ## 🚀 CI/CD Pipeline
 The project includes a pre-configured GitHub Actions workflow located at [.github/workflows/dart.yml](file:///Users/hyperlink/StudioProjects/bloc_architecture/.github/workflows/dart.yml) that:
-1. Installs the exact Flutter version (`3.44.6`).
+1. Installs the exact Flutter version (`3.47.2`).
 2. Leverages caching for the SDK and pub dependencies (`cache: true`) to optimize execution times.
 3. Automatically runs lint checks (`flutter analyze`) and execution tests (`flutter test`) on pushes and pull requests to the `main` branch.
 4. Uses `actions/checkout@v5` (Node.js 24 runtime) — `@v4` is deprecated on current GitHub Actions runners.
@@ -363,9 +500,9 @@ The project includes a pre-configured GitHub Actions workflow located at [.githu
 
 ## 📋 Changelog
 
-### Flutter 3.44.6 Migration
-- **Flutter SDK**: Upgraded from `3.44.3` → `3.44.6` (stable). Dart `3.12.2`, DevTools `2.57.0`.
-- **CI**: Bumped Flutter version pin to `3.44.6` in `dart.yml`.
+### Flutter 3.47.2 Migration
+- **Flutter SDK**: Upgraded to `3.47.2` (stable). Dart `3.13.2`, DevTools `2.60.0`.
+- **CI**: Bumped Flutter version pin to `3.47.2` in `dart.yml`.
 
 ### iOS: CocoaPods → Swift Package Manager
 - Ran `pod deintegrate` to strip all CocoaPods build phases and xcconfig references from `Runner.xcodeproj`.

@@ -35,9 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) => BlocProvider<AuthBloc>(
     create: (_) => locator<AuthBloc>(),
     child: Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Sign Up',
-      ),
+      appBar: const CustomAppBar(title: 'Sign Up'),
       body: Center(
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
@@ -84,7 +82,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   20.verticalSpace,
                   InkWell(
-                    onTap: isLoading ? null : () => appRouter.replaceAll([const LoginRoute()]),
+                    onTap: isLoading
+                        ? null
+                        : () => appRouter.replaceAll([const LoginRoute()]),
                     child: Text(
                       'Already have an account? Sign In',
                       style: AppTextStyle.bodyMedium.copyWith(

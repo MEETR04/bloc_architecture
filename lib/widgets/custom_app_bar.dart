@@ -21,9 +21,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     Size? preferredSize,
   }) : _customPreferredSize = preferredSize,
        assert(
-          title == null || titleWidget == null,
-          "Title and Title widget both can't be set at the same time",
-        );
+         title == null || titleWidget == null,
+         "Title and Title widget both can't be set at the same time",
+       );
 
   final String? title;
   final bool centerTitle;
@@ -42,15 +42,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize =>
       _customPreferredSize ??
-      Size.fromHeight(
-        kToolbarHeight + (bottom?.preferredSize.height ?? 0.0),
-      );
+      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize.height ?? 0.0));
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fallbackBgColor = theme.appBarTheme.backgroundColor ?? theme.colorScheme.primary;
-    final fallbackTitleColor = theme.appBarTheme.titleTextStyle?.color ?? theme.colorScheme.onPrimary;
+    final fallbackBgColor =
+        theme.appBarTheme.backgroundColor ?? theme.colorScheme.primary;
+    final fallbackTitleColor =
+        theme.appBarTheme.titleTextStyle?.color ?? theme.colorScheme.onPrimary;
 
     return AppBar(
       scrolledUnderElevation: 0,
@@ -62,19 +62,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: bottom,
       leading: showLeading
           ? (leadingWidget ??
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                color: titleColor ?? fallbackTitleColor,
-                onPressed: () {
-                  if (backAction != null) {
-                    backAction!();
-                  } else {
-                    context.router.maybePop();
-                  }
-                },
-              ))
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  color: titleColor ?? fallbackTitleColor,
+                  onPressed: () {
+                    if (backAction != null) {
+                      backAction!();
+                    } else {
+                      context.router.maybePop();
+                    }
+                  },
+                ))
           : leadingWidget,
-      title: titleWidget ??
+      title:
+          titleWidget ??
           Text(
             title ?? '',
             style: AppTextStyle.headingMedium.copyWith(
@@ -109,8 +110,8 @@ class BaseAppBar extends CustomAppBar {
     super.bottom,
     super.preferredSize = const Size.fromHeight(kToolbarHeight),
   }) : super(
-          showLeading: leadingIcon,
-          titleColor: titleWidgetColor,
-          borderRadius: radius ?? 20.0,
-        );
+         showLeading: leadingIcon,
+         titleColor: titleWidgetColor,
+         borderRadius: radius ?? 20.0,
+       );
 }

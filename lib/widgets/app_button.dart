@@ -105,8 +105,12 @@ class _AppButtonState extends State<AppButton>
           textColor: widget.textColor ?? Colors.white,
           elevation: 0,
           highlightElevation: 0,
-          splashColor: widget.enableSplash && !widget.isLoading ? splash : Colors.transparent,
-          highlightColor: widget.enableSplash && !widget.isLoading ? null : Colors.transparent,
+          splashColor: widget.enableSplash && !widget.isLoading
+              ? splash
+              : Colors.transparent,
+          highlightColor: widget.enableSplash && !widget.isLoading
+              ? null
+              : Colors.transparent,
           padding:
               widget.padding ??
               EdgeInsets.symmetric(
@@ -134,13 +138,13 @@ class _AppButtonState extends State<AppButton>
                   ),
                 )
               : (widget.child ??
-                  Text(
-                    widget.text,
-                    style: AppTextStyle.labelLarge.copyWith(
-                      fontSize: widget.textSize ?? 16.r,
-                      color: widget.textColor ?? Colors.white,
-                    ),
-                  )),
+                    Text(
+                      widget.text,
+                      style: AppTextStyle.labelLarge.copyWith(
+                        fontSize: widget.textSize ?? 16.r,
+                        color: widget.textColor ?? Colors.white,
+                      ),
+                    )),
         ),
       ),
     );

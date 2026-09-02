@@ -1,0 +1,5 @@
+# Android Fastlane Appfile
+# Configures the package name and service account credentials for Google Play Console
+
+json_key_file(ENV["GCP_SERVICE_ACCOUNT_KEY_PATH"] || ENV["SUPPLY_JSON_KEY"] || "./fastlane/service-account.json")
+package_name(ENV["ANDROID_PACKAGE_NAME"] || "com.example.bloc_architecture")

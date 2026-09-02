@@ -12,7 +12,5 @@ abstract class HomeApi {
 
   // reqres.in returns paginated user list directly
   @GET(APIEndPoints.getUsers)
-  Future<ReqresUserListResponse> getUsers({
-    @Query('page') int page = 1,
-  });
+  Future<ReqresUserListResponse> getUsers({@Query('page') int page = 1});
 }

@@ -15,7 +15,7 @@ dependencies:
   # State Management & Dependency Injection
   bloc: ^9.0.0
 
-  cached_network_image: ^3.4.1
+  cached_network_image: ^4.0.0
 
   # Crypto, Encryption, & Utilities
   connectivity_plus: 
@@ -37,12 +37,12 @@ dependencies:
   dio: ^5.9.0
 
   # UI Design, Custom Controls & Layout
-  dropdown_button2: ^2.3.9
+  dropdown_button2: ^3.1.0
 
   # Crypto, Encryption, & Utilities
   encrypt: 
 
-  file_picker: ^8.1.4
+  file_picker: ^8.1.7
   # Flutter SDK
   flutter:
     sdk: flutter
@@ -64,11 +64,11 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.2.1
 
-  geocoding: ^3.0.0
-  geolocator: ^13.0.1
+  geocoding: ^5.0.0
+  geolocator: ^13.0.4
 
   # State Management & Dependency Injection
-  get_it: ^8.2.0
+  get_it: ^9.2.1
 
   # UI Design, Custom Controls & Layout
   gradient_borders: 
@@ -93,7 +93,7 @@ dependencies:
 
   path: ^1.9.0
   path_provider: ^2.1.5
-  permission_handler: ^11.3.1
+  permission_handler: ^13.0.1
 
   # Networking & HTTP Client
   pretty_dio_logger: ^1.4.0
@@ -117,7 +117,7 @@ dev_dependencies:
   # Code Quality & Linting
   change_app_package_name: ^1.5.0
   flutter_launcher_icons: ^0.14.4
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
   # Testing
   flutter_native_splash: ^2.4.7

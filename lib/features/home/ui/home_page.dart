@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                 padding: AppSpacing.symmetricHS16.copyWith(bottom: 8.r),
                 child: ValueListenableBuilder<String>(
                   valueListenable: _sortNotifier,
-                  builder: (_, __, ___) => AppDropdownTextField(
+                  builder: (_, _, _) => AppDropdownTextField(
                     controller: _sortController,
                     pickedValueNotifier: _sortNotifier,
                     hint: 'Sort by name',

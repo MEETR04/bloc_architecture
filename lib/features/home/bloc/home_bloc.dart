@@ -9,8 +9,8 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({required GetUsersUseCase getUsersUseCase})
-      : _getUsersUseCase = getUsersUseCase,
-        super(HomeInitial()) {
+    : _getUsersUseCase = getUsersUseCase,
+      super(HomeInitial()) {
     on<FetchUsersEvent>(_onFetchUsers);
     on<SortUsersEvent>(_onSortUsers);
   }

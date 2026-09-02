@@ -5,10 +5,7 @@ part 'sign_up_req_model.g.dart';
 // reqres.in register only needs email + password
 @JsonSerializable()
 class SignUpReqModel {
-  const SignUpReqModel({
-    required this.email,
-    required this.password,
-  });
+  const SignUpReqModel({required this.email, required this.password});
 
   factory SignUpReqModel.fromJson(Map<String, dynamic> json) =>
       _$SignUpReqModelFromJson(json);

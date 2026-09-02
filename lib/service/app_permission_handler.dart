@@ -44,48 +44,57 @@ class AppPermissionHandler {
 
   /// Specific helper to check/request Camera permission.
   static Future<bool> requestCamera(BuildContext context) => requestPermission(
-        context,
-        Permission.camera,
-        title: 'Camera Access Required',
-        description: 'We need access to your camera to capture photos. Please enable camera access in your settings.',
-        icon: Icons.camera_alt_rounded,
-      );
+    context,
+    Permission.camera,
+    title: 'Camera Access Required',
+    description:
+        'We need access to your camera to capture photos. Please enable camera access in your settings.',
+    icon: Icons.camera_alt_rounded,
+  );
 
   /// Specific helper to check/request Microphone permission.
-  static Future<bool> requestMicrophone(BuildContext context) => requestPermission(
-        context,
-        Permission.microphone,
-        title: 'Microphone Access Required',
-        description: 'We need access to your microphone to record audio. Please enable microphone access in your settings.',
-        icon: Icons.mic_rounded,
-      );
+  static Future<bool> requestMicrophone(
+    BuildContext context,
+  ) => requestPermission(
+    context,
+    Permission.microphone,
+    title: 'Microphone Access Required',
+    description:
+        'We need access to your microphone to record audio. Please enable microphone access in your settings.',
+    icon: Icons.mic_rounded,
+  );
 
   /// Specific helper to check/request Location permission.
-  static Future<bool> requestLocation(BuildContext context) => requestPermission(
-        context,
-        Permission.locationWhenInUse,
-        title: 'Location Access Required',
-        description: 'We need access to your location to provide core features. Please enable location access in your settings.',
-        icon: Icons.location_on_rounded,
-      );
+  static Future<bool> requestLocation(
+    BuildContext context,
+  ) => requestPermission(
+    context,
+    Permission.locationWhenInUse,
+    title: 'Location Access Required',
+    description:
+        'We need access to your location to provide core features. Please enable location access in your settings.',
+    icon: Icons.location_on_rounded,
+  );
 
   /// Specific helper to check/request Photos/Gallery permission.
   static Future<bool> requestPhotos(BuildContext context) => requestPermission(
-        context,
-        Permission.photos,
-        title: 'Photos Access Required',
-        description: 'We need access to your photo library to select images. Please enable photos access in your settings.',
-        icon: Icons.photo_library_rounded,
-      );
+    context,
+    Permission.photos,
+    title: 'Photos Access Required',
+    description:
+        'We need access to your photo library to select images. Please enable photos access in your settings.',
+    icon: Icons.photo_library_rounded,
+  );
 
   /// Specific helper to check/request Storage permission.
   static Future<bool> requestStorage(BuildContext context) => requestPermission(
-        context,
-        Permission.storage,
-        title: 'Storage Access Required',
-        description: 'We need access to your device storage to save/retrieve files. Please enable storage access in your settings.',
-        icon: Icons.folder_rounded,
-      );
+    context,
+    Permission.storage,
+    title: 'Storage Access Required',
+    description:
+        'We need access to your device storage to save/retrieve files. Please enable storage access in your settings.',
+    icon: Icons.folder_rounded,
+  );
 
   /// Displays an app-themed bottom sheet requesting permission access.
   static Future<void> _showPermissionRequiredBottomSheet(
@@ -104,9 +113,7 @@ class AppPermissionHandler {
         return Container(
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(24.r),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
           ),
           child: SafeArea(
             child: Padding(
