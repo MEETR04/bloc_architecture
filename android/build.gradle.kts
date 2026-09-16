@@ -11,20 +11,17 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
-}
-subprojects {
-    project.evaluationDependsOn(":app")
-}
 
-// Force all plugin subprojects to compile against SDK 37.
-// Required because flutter_plugin_android_lifecycle ≥ 0.10 mandates compileSdk ≥ 36,
-// but several plugins (file_picker, flutter_image_compress, etc.) still pin compileSdk 34.
-subprojects {
+    // Must be registered BEFORE evaluationDependsOn(":app").
+    // afterEvaluate fires after the subproject's build script runs, so it correctly
+    // overrides whatever compileSdk the plugin set (e.g. file_picker sets 35).
+    // If placed in a separate subprojects{} block after evaluationDependsOn, Gradle
+    // will have already evaluated the projects, causing an "already evaluated" error.
     afterEvaluate {
-        extensions
-            .findByType<com.android.build.gradle.BaseExtension>()
-            ?.compileSdkVersion(37)
+        extensions.findByType<com.android.build.gradle.BaseExtension>()?.compileSdkVersion(37)
     }
+
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register<Delete>("clean") {
