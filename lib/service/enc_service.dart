@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 
@@ -44,5 +43,3 @@ class EncService {
     return decrypted;
   }
 }
-
-final enc = locator<EncService>();

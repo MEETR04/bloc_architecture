@@ -2,8 +2,7 @@ import 'package:bloc_architecture/core/api/api_endpoints.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Supported application running environments.
-/// Kept for legacy compatibility — prefer [AppEnv] for new code.
-enum Environment { dev, staging, prod }
+enum Environment { staging, prod }
 
 /// Typed application environment and configuration manager.
 /// Loads and validates configuration parameters from `.env` with safe fallbacks.
@@ -53,7 +52,4 @@ class AppConfig {
 
   /// Returns true if currently running in staging environment.
   static bool get isStaging => environment == Environment.staging;
-
-  /// Returns true if currently running in development environment.
-  static bool get isDevelopment => environment == Environment.dev;
 }

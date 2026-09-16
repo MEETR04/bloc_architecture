@@ -1,0 +1,150 @@
+name: Release Build & Distribute
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.47.2'
+
+jobs:
+
+# ═══════════════════════════════════════════════════════════════
+#  ANDROID — APK + AAB
+# ═══════════════════════════════════════════════════════════════
+  android:
+    name: Android (APK + AAB)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Create .env
+        run: echo "BACKEND_AES_KEY=${{ secrets.BACKEND_AES_KEY }}" > .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.jks
+
+      - name: Write key.properties
+        run: |
+          cat <<EOF > android/key.properties
+          storePassword=${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          keyPassword=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEYSTORE_KEY_ALIAS }}
+          storeFile=release.jks
+          EOF
+
+      - name: Build release APK
+        run: flutter build apk --release --no-shrink
+
+      - name: Build release AAB
+        run: flutter build appbundle --release
+
+      - name: Upload APK to Loadly
+        id: loadly_apk
+        run: |
+          RESPONSE=$(curl -s -X POST "https://api.loadly.io/apiv2/app/upload" \
+            -F "_api_key=${{ secrets.LOADLY_API_KEY }}" \
+            -F "buildUpdateDescription=Release build — ${{ github.sha }}" \
+            -F "file=@build/app/outputs/flutter-apk/app-release.apk")
+          echo "Response: $RESPONSE"
+          LINK=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('data',{}).get('installUrl','N/A'))")
+          echo "apk_link=$LINK" >> "$GITHUB_OUTPUT"
+
+      - name: Store AAB as GitHub artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+      - name: Write job summary
+        run: |
+          echo "## 🤖 Android Release" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact | Link |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| APK (Loadly) | ${{ steps.loadly_apk.outputs.apk_link }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| AAB | Attached as GitHub Actions artifact |" >> $GITHUB_STEP_SUMMARY
+
+# ═══════════════════════════════════════════════════════════════
+#  iOS — IPA
+# ═══════════════════════════════════════════════════════════════
+  ios:
+    name: iOS (IPA)
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Create .env
+        run: echo "BACKEND_AES_KEY=${{ secrets.BACKEND_AES_KEY }}" > .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Pod install
+        run: cd ios && pod install --repo-update
+
+      - name: Import signing certificate
+        run: |
+          echo "${{ secrets.IOS_CERTIFICATE_BASE64 }}" | base64 --decode > certificate.p12
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import certificate.p12 -k build.keychain \
+            -P "${{ secrets.IOS_CERTIFICATE_PASSWORD }}" \
+            -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+      - name: Install provisioning profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" | base64 --decode \
+            > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+
+      - name: Decode ExportOptions.plist
+        run: echo "${{ secrets.EXPORT_OPTIONS_PLIST_BASE64 }}" | base64 --decode > ios/ExportOptions.plist
+
+      - name: Build iOS IPA
+        run: flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+
+      - name: Upload IPA to Loadly
+        id: loadly_ipa
+        run: |
+          IPA_PATH=$(find build/ios/ipa -name "*.ipa" | head -1)
+          echo "Found IPA: $IPA_PATH"
+          RESPONSE=$(curl -s -X POST "https://api.loadly.io/apiv2/app/upload" \
+            -F "_api_key=${{ secrets.LOADLY_API_KEY }}" \
+            -F "buildUpdateDescription=Release build — ${{ github.sha }}" \
+            -F "file=@$IPA_PATH")
+          echo "Response: $RESPONSE"
+          LINK=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('data',{}).get('installUrl','N/A'))")
+          echo "ipa_link=$LINK" >> "$GITHUB_OUTPUT"
+
+      - name: Write job summary
+        run: |
+          echo "## 🍎 iOS Release" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact | Link |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| IPA (Loadly) | ${{ steps.loadly_ipa.outputs.ipa_link }} |" >> $GITHUB_STEP_SUMMARY

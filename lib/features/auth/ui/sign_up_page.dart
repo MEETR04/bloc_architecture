@@ -1,16 +1,17 @@
 import 'package:auto_route/annotations.dart';
 import 'package:bloc_architecture/core/locator/locator.dart';
 import 'package:bloc_architecture/features/auth/bloc/auth_bloc.dart';
-import 'package:bloc_architecture/routes/app_routes.dart';
+import 'package:bloc_architecture/routes/app_navigator.dart';
 import 'package:bloc_architecture/routes/app_routes.gr.dart';
+import 'package:bloc_architecture/values/app_spacing.dart';
 import 'package:bloc_architecture/values/app_text_style.dart';
 import 'package:bloc_architecture/widgets/app_button.dart';
 import 'package:bloc_architecture/widgets/app_snackbar.dart';
 import 'package:bloc_architecture/widgets/app_textfield.dart';
+import 'package:bloc_architecture/widgets/auto_refresh_builder.dart';
 import 'package:bloc_architecture/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
 class SignUpPage extends StatefulWidget {
@@ -36,7 +37,10 @@ class _SignUpPageState extends State<SignUpPage> {
     create: (_) => locator<AuthBloc>(),
     child: Scaffold(
       appBar: const CustomAppBar(title: 'Sign Up'),
-      body: Center(
+      body: AutoRefreshBuilder(
+        onRetry: () {
+          debugPrint('Retry');
+        },
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is SignUpFailedState) {
@@ -44,13 +48,14 @@ class _SignUpPageState extends State<SignUpPage> {
             }
             if (state is SignUpSuccessfulState) {
               AppSnackbar.showSuccess(context, message: state.successMessage);
-              appRouter.replaceAll([const HomeRoute()]);
+              AppNavigator.replaceAll([const HomeRoute()]);
             }
           },
           builder: (context, state) {
             final bool isLoading = state is AuthLoadingState;
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+            return Center(
+              child: Padding(
+              padding: AppSpacing.symmetricHS16,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -60,14 +65,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     isEmail: true,
                     enabled: !isLoading,
                   ),
-                  10.verticalSpace,
+                  AppSpacing.vs12,
                   AppTextField(
                     controller: _passwordController,
                     hintText: 'Enter Password',
                     isPassword: true,
                     enabled: !isLoading,
                   ),
-                  20.verticalSpace,
+                  AppSpacing.vs20,
                   AppButton(
                     text: 'Sign Up',
                     isLoading: isLoading,
@@ -80,11 +85,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       );
                     },
                   ),
-                  20.verticalSpace,
+                  AppSpacing.vs20,
                   InkWell(
                     onTap: isLoading
                         ? null
-                        : () => appRouter.replaceAll([const LoginRoute()]),
+                        : () => AppNavigator.replaceAll([const LoginRoute()]),
                     child: Text(
                       'Already have an account? Sign In',
                       style: AppTextStyle.bodyMedium.copyWith(
@@ -95,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   // Hint for reqres.in predefined emails
-                  20.verticalSpace,
+                  AppSpacing.vs20,
                   Text(
                     'Use: eve.holt@reqres.in / pistol',
                     style: AppTextStyle.bodySmall.copyWith(color: Colors.grey),
@@ -103,6 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
+            ),
             );
           },
         ),
