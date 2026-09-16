@@ -6,7 +6,7 @@ import 'package:retrofit/http.dart';
 
 part 'home_api.g.dart';
 
-@RestApi(baseUrl: APIEndPoints.baseUrl)
+@RestApi()
 abstract class HomeApi {
   factory HomeApi(Dio dio, {String baseUrl}) = _HomeApi;
 

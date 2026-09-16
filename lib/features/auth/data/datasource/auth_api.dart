@@ -9,7 +9,7 @@ import 'package:retrofit/http.dart';
 
 part 'auth_api.g.dart';
 
-@RestApi(baseUrl: APIEndPoints.baseUrl)
+@RestApi()
 abstract class AuthApi {
   factory AuthApi(Dio dio, {String baseUrl}) = _AuthApi;
 

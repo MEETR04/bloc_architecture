@@ -1,6 +1,8 @@
+import 'package:bloc_architecture/core/api/api_endpoints.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Supported application running environments.
+/// Kept for legacy compatibility — prefer [AppEnv] for new code.
 enum Environment { dev, staging, prod }
 
 /// Typed application environment and configuration manager.
@@ -16,9 +18,24 @@ class AppConfig {
   static late final bool enableHttpLogging;
 
   /// Initializes the application configuration.
-  static void init({Environment env = Environment.dev}) {
-    environment = env;
-    baseUrl = dotenv.env['BASE_URL'] ?? 'https://reqres.in/api';
+  ///
+  /// [envOverride] pins the active [AppEnv] regardless of build mode.
+  /// When null, [AppEnvironmentConfig] auto-selects: staging in debug,
+  /// prod in release.
+  static void init({AppEnv? envOverride}) {
+    // Resolve the deployment environment.
+    AppEnvironmentConfig.override = envOverride;
+    AppEnvironmentConfig.resolve();
+
+    // Map AppEnv → legacy Environment enum.
+    environment = switch (AppEnvironmentConfig.activeEnv) {
+      AppEnv.staging => Environment.staging,
+      AppEnv.prod => Environment.prod,
+    };
+
+    // Base URL comes from the env config, not dotenv.
+    baseUrl = AppEnvironmentConfig.baseUrl;
+
     apiKey = dotenv.env['API_KEY'] ?? '';
     connectTimeout = Duration(
       milliseconds:
